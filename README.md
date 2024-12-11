@@ -13,4 +13,6 @@ Update aus der main branch
 
 Das ist mein textlicher Beitrag zum git-Hub-merge testen!
 
-Edit Timo12334
+git push --set-upstream origin feature/edit
+
+git checkout branche
