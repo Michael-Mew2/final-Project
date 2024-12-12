@@ -1,11 +1,14 @@
-const express = require("express");
-const router = express.Router();
+import express from "express";
+import * as user from "../controllers/userController.js"
+import validateRequest from "../middleware/validateRequest.js";
+import validateUser from "../validation/userValidation.js";
 
-const { login, signin, allUser, verify } = require("../controllers/userController.js");
+const userRouter = express.Router();
 
-router.post("/login", login);
-router.post("/signin", signin);
-router.get("/all-user", allUser);
-router.post("/verify", verify);
+userRouter
+    .post("/signin", validateRequest(validateUser), user.createUser)
+    // .post("/login", login)
+    // .get("/all-user", allUser)
+    // .post("/verify", verify)
 
-module.exports = userRouter;
+export default userRouter
