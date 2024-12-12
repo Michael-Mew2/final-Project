@@ -1,9 +1,15 @@
 import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 const userRouter = require("./routes/userRouter.js");
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+app.use(cookieParser());
+
+app.use(cors());
 
 app.use(express.json());
 
