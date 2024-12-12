@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 
 function escapeHTML(str) {
   return str.replace(/[&<>"']/g, function (char) {
@@ -18,7 +19,7 @@ const userSchema = new Schema(
     // Vom user angegebene Konto informationen
     username: {
       type: String,
-      required: [true, "Please enter an username!"],
+      required: [true, "Please enter a username!"],
       unique: true,
       set: (v) =>
         escapeHTML(
@@ -99,4 +100,25 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-export const User = model("User", userSchema);
+userSchema.pre("save", async function (next) {
+  try {
+    const hash = await bcrypt.hash(this.password, 12);
+    this.password = hash;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+userSchema.methods.authenticate = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
+
+const User = model("User", userSchema);
+export default User;
