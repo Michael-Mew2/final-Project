@@ -56,6 +56,10 @@ const userSchema = new Schema(
       enum: ["user", "admin"],
       default: ["user"],
     },
+    isAllowedIn: {
+      type: Boolean,
+      default: true,
+    },
     // Premium-abo einstellungen:
     isPremiumMember: {
       type: Boolean,
