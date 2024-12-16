@@ -137,6 +137,11 @@ export async function updateUserData(req, res) {
 
     const { userId } = req.params;
 
+    let query = {}
+    if(userRole !== "admin") {
+      query._id = userId;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
       runValidators: true,

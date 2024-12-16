@@ -12,7 +12,7 @@ userRouter
   .post("/login", user.loginUser)
   .post("/logout", user.logoutUser)
   .get("/display/all", authenticate, user.getAllUser)
-  .get("/display/:userId", authenticate, user.getUserData)
+  .get("/display/:userId", authenticate, checkUser, user.getUserData)
   .put(
     "/update/:userId",
     authenticate,
