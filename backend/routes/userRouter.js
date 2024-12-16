@@ -1,14 +1,31 @@
 import express from "express";
-import * as user from "../controllers/userController.js"
+import * as user from "../controllers/userController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import validateUser from "../validation/userValidation.js";
+import { authenticate } from "../middleware/jwt.js";
+import { checkRole, checkUser } from "../middleware/checkUser.js";
 
 const userRouter = express.Router();
 
 userRouter
-    .post("/signin", validateRequest(validateUser), user.createUser)
-    // .post("/login", login)
-    // .get("/all-user", allUser)
-    // .post("/verify", verify)
+  .post("/signin", validateRequest(validateUser), user.createUser)
+  .post("/login", user.loginUser)
+  .post("/logout", user.logoutUser)
+  .get("/display/all", authenticate, user.getAllUser)
+  .get("/display/:userId", authenticate, user.getUserData)
+  .put(
+    "/update/:userId",
+    authenticate,
+    checkUser,
+    checkRole("admin", "user"),
+    user.updateUserData
+  )
+  .get(
+    "/admin/all-user",
+    authenticate,
+    checkRole("admin"),
+    user.getAllUserAsAdmin
+  );
+// .post("/verify", verify)
 
-export default userRouter
+export default userRouter;
