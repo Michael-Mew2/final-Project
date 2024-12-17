@@ -13,19 +13,27 @@ userRouter
   .post("/logout", user.logoutUser)
   .get("/display/all", authenticate, user.getAllUser)
   .get("/display/:userId", authenticate, checkUser, user.getUserData)
-  .put(
+  .patch(
     "/update/:userId",
     authenticate,
     checkUser,
     checkRole("admin", "user"),
     user.updateUserData
   )
-  .get(
-    "/admin/all-user",
+  .get("/admin/users", authenticate, checkRole("admin"), user.getAllUserAsAdmin)
+  .put(
+    "/admin/users/:userId/block",
     authenticate,
     checkRole("admin"),
-    user.getAllUserAsAdmin
-  );
+    user.blockUser
+  )
+  .put(
+    "/admin/users/:userId/unblock",
+    authenticate,
+    checkRole("admin"),
+    user.unblockUser
+  )
+  .delete("/admin/users/:userId/delete", authenticate, checkRole("admin"), user.deleteUserAsAdmin)
 // .post("/verify", verify)
 
 export default userRouter;

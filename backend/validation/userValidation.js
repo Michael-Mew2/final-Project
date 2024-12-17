@@ -55,10 +55,10 @@ const userSchema = {
     birthdate: {
       type: "string",
       format: "date",
-      isOldEnough: 16,
+      isOldEnough: 14,
       errorMessage: {
         format: "Please enter a valid birthdate in YYYY-MM-DD format!",
-        isOldEnough: "You need to be at least 16 years old to join!",
+        isOldEnough: "You need to be at least 14 years old to join!",
       },
     },
   },

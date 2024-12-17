@@ -2,10 +2,13 @@ export async function checkUser(req, res, next) {
   const tokenId = req.user.id.toString();
   const paramId = req.params.userId;
   // console.log("parameter:", paramId, "token:", tokenId);
+  // console.log(req.user.role.toString());
+  
 
-  if (req.user.role === "admin") {
-    next();
+  if (req.user.role.toString() === "admin") {
+    return next();
   }
+  
   if (tokenId !== paramId) {
     return res.status(403).json({ msg: "Permission denied!" });
   }
