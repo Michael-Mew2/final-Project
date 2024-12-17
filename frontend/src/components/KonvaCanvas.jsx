@@ -76,7 +76,7 @@ const KonvaCanvas = () => {
 
   return (
     <div>
-      <div id="konva-container" style={{ border: "1px solid black", width: "100vw", height: "100vh" }}></div>
+      <div id="konva-container" style={{ border: "1px solid black", width: "100%", height: "100%" }}></div>
       <div style={{ marginTop: "10px" }}>
         {colors.map((color, index) => (
           <button
