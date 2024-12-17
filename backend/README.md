@@ -34,12 +34,21 @@
 `GET: user/display/:userId` -> Show all information about the logged in user
 
 ### Update user
-`PUT: user/update/:userId` -> Update username, email and password of the logged in user
+`PATCH: user/update/:userId` -> Update username, email and password of the logged in user
 
 
 ## admin paths
-`PUT: user/update/userId` -> Update username, email, role, isAllowedIn, isPremiumMember of a selected user 
+### Update user-data as admin
+`PATCH: user/update/userId` -> Update username, email, role, isAllowedIn, isPremiumMember of a selected user 
 
-## Get all user as admin
-`GET: user/admin/all-user` -> Show all user with following information: username, email, birthdate, role, isAllowedIn, isPremiumMember, lastLoginTime, totalPixelsPlaced and placedPixel
+### Get all user as admin
+`GET: user/admin/users` -> Show all user with following information: username, email, birthdate, role, isAllowedIn, isPremiumMember, lastLoginTime, totalPixelsPlaced and placedPixel
 
+### Block user
+`PUT: user/admin/users/:userId/block` -> Block the user with the corresponding :userId. Not possible to block an **admin** directly with this method
+
+### Un-Block user
+`PUT: user/admin/users/:userId/unblock` -> Un-block the user with the corresponding :userId. Not possible to un-block an **admin** directly with this method
+
+### Delete user
+`DELETE: user/admin/users/:userId/delete` -> Delete the user with the corresponding :userId. Not possible to delete an **admin** directly with this method

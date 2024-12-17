@@ -43,10 +43,18 @@ export async function loginUser(req, res) {
 
     if (!user) return res.status(404).json({ msg: "User not found!" });
 
-    const passwordMatch = user.authenticate(password);
+    const passwordMatch = await user.authenticate(password);
+    // console.log(passwordMatch);
 
     if (!passwordMatch)
       return res.status(401).json({ msg: "Login doesn't match!" });
+
+    if (!user.isAllowedIn)
+      return res
+        .status(401)
+        .json({
+          msg: "Your accunt has been blocked, please contact the page administrators!",
+        });
 
     const token = generateToken({ userId: user._id });
 
@@ -117,7 +125,7 @@ export async function getUserData(req, res) {
 export async function updateUserData(req, res) {
   try {
     const roleBasedFields = {
-      user: ["username", "email", "password"],
+      user: ["username", "email"],
       admin: ["username", "email", "role", "isAllowedIn", "isPremiumMember"],
     };
 
@@ -128,26 +136,35 @@ export async function updateUserData(req, res) {
     // console.log("allowed Fields", allowedFields);
 
     const updates = Object.keys(req.body);
+    // console.log(updates);
+    
 
     const isValidUpdates = updates.every((field) =>
       allowedFields.includes(field)
     );
+    // console.log(isValidUpdates);
+    
     if (!isValidUpdates)
       return res.status(400).json({ msg: "Invalid updates!" });
 
     const { userId } = req.params;
+    // console.log(userId);
+    
 
-    let query = {}
-    if(userRole !== "admin") {
+    let query = {};
+    if (userRole !== "admin") {
       query._id = userId;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
+    // console.log(query);
+    
+    const updatedUser = await User.findByIdAndUpdate(query, req.body, {
       new: true,
       runValidators: true,
     });
     if (!updatedUser) return res.status(404).json({ msg: "User not found!" });
 
+    
     res
       .status(200)
       .json({ msg: "User was successfully updated!", userData: updatedUser });
@@ -181,5 +198,105 @@ export async function getAllUser(req, res) {
     res.status(200).json({ users });
   } catch (error) {
     res.status(500).json({ msg: "Server error", error });
+  }
+}
+
+// ----------
+// Nutzer sperren:
+export async function blockUser(req, res) {
+  try {
+    // const adminRole = req.user.role;
+
+    const userId = req.params.userId;
+    // console.log(userId);
+
+    const userToBlock = await User.findById(userId);
+    // console.log({userToBlock});
+
+    if (!userToBlock) return res.status(404).json({ msg: "user not found!" });
+
+    if (userToBlock.role.toString() === "admin")
+      return res
+        .status(405)
+        .json({
+          msg: "You are not allowed to block another admin, please contact other admins first!",
+        });
+
+    const blockedUser = await User.findByIdAndUpdate(
+      userId,
+      { isAllowedIn: false },
+      { new: true, runValidators: true }
+    );
+
+    return res
+      .status(200)
+      .json({ msg: "User was blocked", userData: blockedUser });
+  } catch (error) {
+    return res.status(500).json({ msg: "Server error", error });
+  }
+}
+
+// Nutzer entsperren:
+export async function unblockUser(req, res) {
+  try {
+    // const adminRole = req.user.role;
+
+    const userId = req.params.userId;
+    // console.log(userId);
+
+    const userToUnBlock = await User.findById(userId);
+    // console.log({userToBlock});
+
+    if (!userToUnBlock) return res.status(404).json({ msg: "user not found!" });
+
+    if (userToUnBlock.role.toString() === "admin")
+      return res
+        .status(405)
+        .json({
+          msg: "You are not allowed to block another admin, please contact other admins first!",
+        });
+
+    const unBlockedUser = await User.findByIdAndUpdate(
+      userId,
+      { isAllowedIn: true },
+      { new: true, runValidators: true }
+    );
+
+    return res
+      .status(200)
+      .json({ msg: "User was blocked", userData: unBlockedUser });
+  } catch (error) {
+    return res.status(500).json({ msg: "Server error", error });
+  }
+}
+
+// ----------
+// Nutzer löschen:
+export async function deleteUserAsAdmin(req, res) {
+  try {
+    const userId = req.params.userId;
+
+    console.log(userId);
+    
+    const userToDelete = await User.findById(userId);
+    console.log(userToDelete);
+    
+
+    if (!userToDelete) return res.status(404).json({ msg: "user not found!" });
+
+    if (userToDelete.role.toString() === "admin")
+      return res
+        .status(405)
+        .json({
+          msg: "You are not allowed to delete another admin, please contact other admins first!",
+        });
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    return res
+      .status(200)
+      .json({ msg: "User was deleted", userData: deletedUser });
+  } catch (error) {
+    return res.status(500).json({ msg: "Server error", error });
   }
 }
