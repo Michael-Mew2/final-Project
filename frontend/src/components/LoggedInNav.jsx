@@ -1,9 +1,8 @@
-import React from "react";
-import { Header, Container, Group, Button, Menu, Text, Title } from "@mantine/core";
+import { Container, Group, Title, Button, Menu } from "@mantine/core";
 
 const LoggedInNav = ({ onLogout }) => {
   return (
-    <Header height={70} px="md" style={{ backgroundColor: "lightblue" }}>
+    <div style={{ height: 70, padding: "0 16px", backgroundColor: "lightblue" }}>
       <Container
         size="xl"
         style={{
@@ -11,12 +10,11 @@ const LoggedInNav = ({ onLogout }) => {
           justifyContent: "space-between",
           alignItems: "center",
           height: "100%",
-        }}>
-        
+        }}
+      >
         <Title order={3} style={{ fontWeight: "bold" }}>
           pixel-together
         </Title>
-        
         <Group spacing="sm">
           <Button variant="subtle" size="md">
             Dashboard
@@ -40,7 +38,7 @@ const LoggedInNav = ({ onLogout }) => {
           </Menu>
         </Group>
       </Container>
-    </Header>
+    </div>
   );
 };
 
