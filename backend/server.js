@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import session from "express-session";
+import pixelRouter from "./routes/pixelRouter.js";
 
 connectDB();
 
@@ -25,6 +26,7 @@ app.use(session({
 }))
 
 app.use("/user", userRouter)
+app.use("/canvas", pixelRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port: ${PORT}`)

@@ -4,19 +4,23 @@ const pixelSchema = new Schema(
   {
     x: {
       type: Number,
+      required: true,
     },
     y: {
       type: Number,
+      required: true,
     },
     color: {
       type: String,
+      required: true,
     },
     addedBy: {
       type: String,
     },
-  },
-  { timestamps: true, _id: false }
+  }
 );
+
+pixelSchema.index({x: 1, y: 1}, {unique: true})
 
 const Pixel = model("Pixel", pixelSchema);
 export default Pixel;

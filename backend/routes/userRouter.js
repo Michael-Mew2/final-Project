@@ -11,10 +11,10 @@ userRouter
   .post("/signin", validateRequest(validateUser), user.createUser)
   .post("/login", user.loginUser)
   .post("/logout", user.logoutUser)
-  .get("/display/all", authenticate, user.getAllUser)
-  .get("/display/:userId", authenticate, checkUser, user.getUserData)
+  .get("/all", authenticate, user.getAllUser)
+  .get("/:userId/display", authenticate, checkUser, user.getUserData)
   .patch(
-    "/update/:userId",
+    "/:userId/update",
     authenticate,
     checkUser,
     checkRole("admin", "user"),
@@ -33,7 +33,12 @@ userRouter
     checkRole("admin"),
     user.unblockUser
   )
-  .delete("/admin/users/:userId/delete", authenticate, checkRole("admin"), user.deleteUserAsAdmin)
+  .delete(
+    "/admin/users/:userId/delete",
+    authenticate,
+    checkRole("admin"),
+    user.deleteUserAsAdmin
+  );
 // .post("/verify", verify)
 
 export default userRouter;
