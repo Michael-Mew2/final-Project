@@ -43,11 +43,11 @@ const userSchema = {
     password: {
       type: "string",
       minLength: 8,
-      maxLength: 50,
+      // maxLength: 50,
       pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
       errorMessage: {
         minLength: "Your password requires at least 8 characters!",
-        maxLength: "Your password is too long, our limit is 50 characters!",
+        // maxLength: "Your password is too long, our limit is 50 characters!",
         pattern:
           "Your password needs at least one numerical digit, a special symbol and an upper- and lowercase letter!",
       },

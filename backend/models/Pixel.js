@@ -17,7 +17,14 @@ const pixelSchema = new Schema(
     addedBy: {
       type: String,
     },
-  }
+    history: [
+      {
+        color: { type: String, required: true },
+        addedBy: { type: String },
+        placedAt: { type: Date, default: Date.now },
+      },
+    ],
+  }, {timestamps: true}
 );
 
 pixelSchema.index({x: 1, y: 1}, {unique: true})
