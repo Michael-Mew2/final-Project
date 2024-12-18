@@ -43,7 +43,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Please enter a password!"],
       minLength: [8, "Your password requires at least 8 characters!"],
-      maxLength: [50, "Your password is too long, our limit is 50 characters!"],
+      // maxLength: [50, "Your password is too long, our limit is 50 characters!"],
       match: [
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g,
         "Your password needs at least one numerical digit, a special symbol and an upper- and lowercase letter!",
