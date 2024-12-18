@@ -1,9 +1,9 @@
 import React from "react";
-import { Header, Container, Group, Button, Title } from "@mantine/core";
+import { Container, Group, Button, Title } from "@mantine/core";
 
 const LoggedOutNav = ({ onLogin, onRegister }) => {
   return (
-    <Header height={70} px="md" style={{ backgroundColor: "lightblue" }}>
+    <div style={{ height: 70, padding: "0 16px", backgroundColor: "lightblue" }}>
       <Container
         size="xl"
         style={{
@@ -12,9 +12,9 @@ const LoggedOutNav = ({ onLogin, onRegister }) => {
           alignItems: "center",
           height: "100%",
         }}>
-      
+          
         <Title order={3} style={{ fontWeight: "bold" }}>
-          pixel-together
+          
         </Title>
 
         <Group spacing="sm">
@@ -26,7 +26,7 @@ const LoggedOutNav = ({ onLogin, onRegister }) => {
           </Button>
         </Group>
       </Container>
-    </Header>
+    </div>
   );
 };
 

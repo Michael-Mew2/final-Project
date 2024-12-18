@@ -10,7 +10,8 @@ const useUserStore = create((set, get) => ({
 
   getUser: () => get().user,
 
-  clearUser: () => set({ user: { id: null, name: "" } }),
+  clearUser: () => set({ user: { id: null, name: "" } }), // clearUser wird hier verwendet
 }));
 
-export default useUserStore;
+// Benannter Export
+export { useUserStore };
