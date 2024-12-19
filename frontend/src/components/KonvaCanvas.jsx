@@ -1,19 +1,18 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
 
-const KonvaCanvas = () => {
+const KonvaCanvas = ({ selectedColor }) => {
   const stageRef = useRef(null);
   const layerRef = useRef(null);
   const GRID_SIZE = 50;
   const PIXEL_SIZE = 10;
-  const colors = ["#FFFFFF", "#000000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
-  let selectedColor = colors[0];
 
   useEffect(() => {
+    // Stage und Layer werden nur einmal beim Initialisieren erstellt
     const stage = new Konva.Stage({
       container: "konva-container",
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: window.innerWidth * 0.5,  // Setzt die Breite auf 50% der Viewport-Breite
+      height: window.innerHeight * 0.5, // Setzt die Höhe auf 50% der Viewport-Höhe
       draggable: true,
     });
 
@@ -22,6 +21,8 @@ const KonvaCanvas = () => {
     stageRef.current = stage;
     layerRef.current = layer;
 
+    const initialRects = [];
+    // Initiales Gitter erstellen
     for (let y = 0; y < GRID_SIZE; y++) {
       for (let x = 0; x < GRID_SIZE; x++) {
         const rect = new Konva.Rect({
@@ -29,22 +30,25 @@ const KonvaCanvas = () => {
           y: y * PIXEL_SIZE,
           width: PIXEL_SIZE,
           height: PIXEL_SIZE,
-          fill: "#FFFFFF",
+          fill: "#FFFFFF", // Standardfarbe (weiß)
           stroke: "#CCCCCC",
           strokeWidth: 1,
         });
 
+        // Beim Klicken auf ein Rechteck ändern wir die Farbe des Pixels
         rect.on("click", () => {
-          rect.fill(selectedColor);
-          layer.batchDraw();
+          rect.fill(selectedColor); // Ändert die Farbe des angeklickten Pixels
+          layer.batchDraw(); // Zeichnet nur das geänderte Pixel neu
         });
 
-        layer.add(rect);
+        initialRects.push(rect);
+        layer.add(rect); // Fügt das Rechteck der Schicht hinzu
       }
     }
 
-    layer.batchDraw();
+    layer.batchDraw(); // Zeichnet das Gitter nach dem Erstellen
 
+    // Zoom-Funktionalität hinzufügen
     stage.on("wheel", (e) => {
       e.evt.preventDefault();
       const scaleBy = 1.05;
@@ -66,34 +70,27 @@ const KonvaCanvas = () => {
     });
 
     return () => {
-      stage.destroy();
+      stage.destroy(); // Zerstört die Stage bei Komponenten-Unmount
     };
-  }, []);
+  }, []); // Dieser Effekt läuft nur einmal beim ersten Rendern
 
-  const handleColorSelect = (color) => {
-    selectedColor = color;
-  };
+  useEffect(() => {
+    // Dieser Effekt wird aufgerufen, wenn sich die Farbe ändert
+    const layer = layerRef.current;
+    if (layer) {
+      layer.batchDraw(); // Das Layer neu zeichnen
+    }
+  }, [selectedColor]); // Dieser Effekt wird ausgelöst, wenn sich die Farbe ändert
 
   return (
-    <div>
-      <div id="konva-container" style={{ border: "1px solid black", width: "100%", height: "100%" }}></div>
-      <div style={{ marginTop: "10px" }}>
-        {colors.map((color, index) => (
-          <button
-            key={index}
-            style={{
-              backgroundColor: color,
-              width: "30px",
-              height: "30px",
-              margin: "5px",
-              border: "none",
-              cursor: "pointer",
-            }}
-            onClick={() => handleColorSelect(color)}
-          ></button>
-        ))}
-      </div>
-    </div>
+    <div
+      id="konva-container"
+      style={{
+        width: "45vw", // Setzt die Breite des Containers auf 50% der Viewport-Breite
+        height: "50vh", // Setzt die Höhe des Containers auf 50% der Viewport-Höhe
+        border: "1px solid black",
+      }}
+    ></div>
   );
 };
 
