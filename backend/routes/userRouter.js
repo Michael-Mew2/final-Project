@@ -4,6 +4,7 @@ import validateRequest from "../middleware/validateRequest.js";
 import validateUser from "../validation/userValidation.js";
 import { authenticate } from "../middleware/jwt.js";
 import { checkRole, checkUser } from "../middleware/checkUser.js";
+import { getTopUsersByPixels } from "../controllers/pixelController.js";
 
 const userRouter = express.Router();
 
@@ -12,6 +13,7 @@ userRouter
   .post("/login", user.loginUser)
   .post("/logout", user.logoutUser)
   .get("/all", authenticate, user.getAllUser)
+  .get("/top-by-range", getTopUsersByPixels)
   .get("/:userId/display", authenticate, checkUser, user.getUserData)
   .patch(
     "/:userId/update",
