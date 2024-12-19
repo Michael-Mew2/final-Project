@@ -7,7 +7,7 @@ import { limitPixelChanges } from "../middleware/limitPixelChanges.js";
 const pixelRouter = express.Router();
 
 pixelRouter
-  .put("/place", authenticate, limitPixelChanges, validatePixelData, pixel.putPixelOnCanvas)
+  .put("/place", authenticate, validatePixelData, limitPixelChanges, pixel.putPixelOnCanvas)
   .get("/:x/:y", pixel.getPixel)
   .get("/:x/:y/history", pixel.getPixelHistory)
   .get("/stats", pixel.getPixelStats);

@@ -13,5 +13,5 @@ export const limitPixelChanges = rateLimit({
     console.log("Limiter ausgelöst für:", req.user.id);
     req.user.id;
   },
-  message: "You can only place a pixel every 2 minutes!",
+  message: `You can only place a pixel every ${timeWindowInMinutes} minutes!`,
 });
