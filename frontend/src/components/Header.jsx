@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Group, Title, ActionIcon, Drawer, Button } from "@mantine/core";
 import { Sun, Moon, Menu } from "tabler-icons-react";
+import "@mantine/core/styles.css";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -34,22 +35,24 @@ const HeaderComponent = () => {
         </ActionIcon>
 
         <Drawer
-          opened={drawerOpened}
-          onClose={() => setDrawerOpened(false)}
-          title="Navigation"
-          padding="xl"
-          size="md"
-        >
-          <Button variant="subtle" fullWidth>
-            Dashboard
-          </Button>
-          <Button variant="subtle" fullWidth>
-            Team
-          </Button>
-          <Button variant="subtle" fullWidth>
-            Einstellungen
-          </Button>
-        </Drawer>
+            opened={drawerOpened}
+            onClose={() => setDrawerOpened(false)}
+  title="Navigation"
+  padding="xl"
+  size="md"
+  styles={{ drawer: { zIndex: 1000 } }}
+>
+  <Button variant="subtle" fullWidth>
+    Dashboard
+  </Button>
+  <Button variant="subtle" fullWidth>
+    Team
+  </Button>
+  <Button variant="subtle" fullWidth>
+    Einstellungen
+  </Button>
+</Drawer>
+
       </Container>
     </div>
   );
