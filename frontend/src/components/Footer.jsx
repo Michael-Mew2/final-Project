@@ -15,7 +15,7 @@ const FooterComponent = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href="https://github.com/"
+              href="https://github.com/Michael-Mew2/final-Project"
               target="_blank"
               title="GitHub"
             >
