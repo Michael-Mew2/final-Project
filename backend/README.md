@@ -61,9 +61,9 @@
 
 ```json
 {
-    "x": /* x-coordinate of the pixel on the canvas */,
-    "y": /* y-coordinate of the pixel on the canvas */,
-    "color": /* the color you want the pixel to become */
+    "x": /* x-coordinate of the pixel on the canvas as Number */,
+    "y": /* y-coordinate of the pixel on the canvas as Number */,
+    "color": /* the color you want the pixel to become in HEX-Format */
 }
 ```
 

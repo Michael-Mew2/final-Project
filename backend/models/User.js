@@ -53,7 +53,7 @@ const userSchema = new Schema(
     // Rolle des Users:
     role: {
       type: [String],
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "premium"],
       default: ["user"],
     },
     isAllowedIn: {
