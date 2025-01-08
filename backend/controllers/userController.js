@@ -1,10 +1,10 @@
+import { AUTH_CONFIG } from "../config/auth.config.js";
 import { generateToken, verifyToken } from "../middleware/jwt.js";
 import User from "../models/User.js";
+import crypto from "crypto";
+// Task hier weitermachen (mit claude)!
+// import sendEmail from // --> hier Aufgehört!!
 
-// ==========
-
-const COOKIE_MAX_AGE =
-  parseInt(process.env.COOKIE_EXPIRES_IN) || 60 * 60 * 1000;
 
 // ==========
 
