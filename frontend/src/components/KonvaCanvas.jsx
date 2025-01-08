@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import Konva from "konva";
 
 const KonvaCanvas = ({ selectedColor }) => {
   const stageRef = useRef(null);
