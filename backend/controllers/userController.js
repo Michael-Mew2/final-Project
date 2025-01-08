@@ -3,6 +3,11 @@ import User from "../models/User.js";
 
 // ==========
 
+const COOKIE_MAX_AGE =
+  parseInt(process.env.COOKIE_EXPIRES_IN) || 60 * 60 * 1000;
+
+// ==========
+
 // Nutzer registrieren:
 export async function createUser(req, res) {
   try {
@@ -39,28 +44,25 @@ export async function createUser(req, res) {
 export async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
 
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ msg: "User not found!" });
 
     const passwordMatch = await user.authenticate(password);
     // console.log(passwordMatch);
-
     if (!passwordMatch)
       return res.status(401).json({ msg: "Login doesn't match!" });
 
     if (!user.isAllowedIn)
-      return res
-        .status(401)
-        .json({
-          msg: "Your accunt has been blocked, please contact the page administrators!",
-        });
+      return res.status(401).json({
+        msg: "Your accunt has been blocked, please contact the page administrators!",
+      });
 
     const token = generateToken({ userId: user._id });
 
     return res
       .status(200)
-      .cookie("jwt", token, { maxAge: 60 * 60 * 1000 })
+      .cookie("jwt", token, { httpOnly: true, maxAge: COOKIE_MAX_AGE })
       .json({ msg: "Login successful", user });
   } catch (error) {
     console.log(error);
@@ -92,15 +94,9 @@ export async function checkAuthStatus(req, res) {
 // Nutzer ausloggen:
 export function logoutUser(req, res) {
   try {
-    if (!req.session)
-      res.status(400).json({ msg: "No active sesion to destroy!" });
-    req.session.destroy((err) => {
-      if (err) return res.status(500).json({ msg: "Logout failed!" });
-
-      res.status(200).clearCookie("jwt").json({ msg: "Logout complete!" });
-    });
+    res.clearCookie("jwt").status(200).json({ msg: "Logout complete!" });
   } catch (error) {
-    console.log(error);
+    console.log("Logout error:", error);
     res.status(500).json({ msg: "Server error", error });
   }
 }
@@ -137,19 +133,17 @@ export async function updateUserData(req, res) {
 
     const updates = Object.keys(req.body);
     // console.log(updates);
-    
 
     const isValidUpdates = updates.every((field) =>
       allowedFields.includes(field)
     );
     // console.log(isValidUpdates);
-    
+
     if (!isValidUpdates)
       return res.status(400).json({ msg: "Invalid updates!" });
 
     const { userId } = req.params;
     // console.log(userId);
-    
 
     let query = {};
     if (userRole !== "admin") {
@@ -157,14 +151,13 @@ export async function updateUserData(req, res) {
     }
 
     // console.log(query);
-    
+
     const updatedUser = await User.findByIdAndUpdate(query, req.body, {
       new: true,
       runValidators: true,
     });
     if (!updatedUser) return res.status(404).json({ msg: "User not found!" });
 
-    
     res
       .status(200)
       .json({ msg: "User was successfully updated!", userData: updatedUser });
@@ -216,11 +209,9 @@ export async function blockUser(req, res) {
     if (!userToBlock) return res.status(404).json({ msg: "user not found!" });
 
     if (userToBlock.role.toString() === "admin")
-      return res
-        .status(405)
-        .json({
-          msg: "You are not allowed to block another admin, please contact other admins first!",
-        });
+      return res.status(405).json({
+        msg: "You are not allowed to block another admin, please contact other admins first!",
+      });
 
     const blockedUser = await User.findByIdAndUpdate(
       userId,
@@ -250,11 +241,9 @@ export async function unblockUser(req, res) {
     if (!userToUnBlock) return res.status(404).json({ msg: "user not found!" });
 
     if (userToUnBlock.role.toString() === "admin")
-      return res
-        .status(405)
-        .json({
-          msg: "You are not allowed to block another admin, please contact other admins first!",
-        });
+      return res.status(405).json({
+        msg: "You are not allowed to block another admin, please contact other admins first!",
+      });
 
     const unBlockedUser = await User.findByIdAndUpdate(
       userId,
@@ -277,19 +266,16 @@ export async function deleteUserAsAdmin(req, res) {
     const userId = req.params.userId;
 
     console.log(userId);
-    
+
     const userToDelete = await User.findById(userId);
     console.log(userToDelete);
-    
 
     if (!userToDelete) return res.status(404).json({ msg: "user not found!" });
 
     if (userToDelete.role.toString() === "admin")
-      return res
-        .status(405)
-        .json({
-          msg: "You are not allowed to delete another admin, please contact other admins first!",
-        });
+      return res.status(405).json({
+        msg: "You are not allowed to delete another admin, please contact other admins first!",
+      });
 
     const deletedUser = await User.findByIdAndDelete(userId);
 
