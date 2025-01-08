@@ -13,8 +13,8 @@ const KonvaCanvas = ({ selectedColor }) => {
   useEffect(() => {
     const stage = new Konva.Stage({
       container: "konva-container",
-      width: window.innerWidth * 0.5,
-      height: window.innerHeight * 0.5,
+      width: window.innerWidth * 0.449,
+      height: window.innerHeight * 0.499,
       draggable: true,
     });
 
@@ -48,6 +48,31 @@ const KonvaCanvas = ({ selectedColor }) => {
     }
 
     layer.batchDraw();
+
+    const handleZoom = (e) => {
+      e.evt.preventDefault();
+      const scaleBy = 1.1;
+      const oldScale = stage.scaleX();
+
+      const mousePointTo = {
+        x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+        y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+      };
+
+      const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+      stage.scale({ x: newScale, y: newScale });
+
+      const newPos = {
+        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+      };
+
+      stage.position(newPos);
+      stage.batchDraw();
+    };
+
+    stage.on("wheel", handleZoom);
 
     return () => {
       stage.destroy();
