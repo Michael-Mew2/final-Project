@@ -3,18 +3,34 @@ import Header from "./Header";
 import Footer from "./Footer";
 import KonvaCanvas from "./KonvaCanvas";
 import FarbPalette from "./FarbPalette";
+import LoginOverlay from "./LoginOverlay";
 
-const Layout = () => {
+const Layout = ({ children }) => {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#000000");
 
+  const handleLoginOpen = () => {
+    setIsLoginOpen(true);
+  };
+
+  const handleLoginClose = () => {
+    setIsLoginOpen(false);
+  };
+
+  const handleLogin = (userData) => {
+    console.log("Eingeloggt als:", userData.username);
+    setIsLoginOpen(false);
+  };
+  
   const handleColorSelect = (color) => {
     setSelectedColor(color); // Setzt die neue Farbe, wenn sie in der Farbpalette ausgewählt wird
   };
 
+
   return (
     <div className="layout-container">
-      {/* Header */}
-      <Header />
+      <Header onLoginClick={handleLoginOpen} />
+
 
       {/* Farbpalette */}
       <FarbPalette onColorSelect={handleColorSelect} />
@@ -22,10 +38,16 @@ const Layout = () => {
       {/* Canvas */}
       <main>
         <KonvaCanvas selectedColor={selectedColor} />
+          {children}
       </main>
 
-      {/* Footer */}
       <Footer />
+
+      <LoginOverlay
+        isOpen={isLoginOpen}
+        onClose={handleLoginClose}
+        onLogin={handleLogin}
+      />
     </div>
   );
 };

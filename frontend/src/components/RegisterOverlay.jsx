@@ -45,9 +45,10 @@ const RegisterOverlay = ({ isOpen, onClose, onRegister }) => {
       onClose={onClose}
       title={<Title order={3}>Registrieren</Title>}
       centered
+      overlayOpacity={0.6} // Nur diese Prop bleibt
+      zIndex={2000} // Sicherstellen, dass Modal über allem liegt
     >
       <form onSubmit={handleSubmit}>
-
         <TextInput
           label="Name"
           placeholder="Dein Name"
