@@ -65,6 +65,16 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // Sicherheitsfelder für die Anmeldung:
+    loginAttempts: {
+      type: Number,
+      default: 0
+    },
+    lastLoginAttempt: {
+      type: Date
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     // E-mail Validierung:
     emailValidated: {
       type: Boolean,
