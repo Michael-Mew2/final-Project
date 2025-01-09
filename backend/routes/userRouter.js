@@ -2,6 +2,7 @@ import express from "express";
 import * as user from "../controllers/userController.js";
 import validateRequest from "../middleware/validateRequest.js";
 import validateUser from "../validation/userValidation.js";
+import loginLimiter from "../middleware/limitLogins.js"
 import { authenticate } from "../middleware/jwt.js";
 import { checkRole, checkUser } from "../middleware/checkUser.js";
 import { getTopUsersByPixels } from "../controllers/pixelController.js";
@@ -10,7 +11,10 @@ const userRouter = express.Router();
 
 userRouter
   .post("/signin", validateRequest(validateUser), user.createUser)
-  .post("/login", user.loginUser)
+  .post("/password-reset-request", user.requestPasswordReset)
+  .post("/password-reset", user.resetPassword)
+  .get("/validate-email/:token", user.validateEmail)
+  .post("/login", loginLimiter, user.loginUser)
   .post("/logout", user.logoutUser)
   .get("/all", authenticate, user.getAllUser)
   .get("/top-by-range", getTopUsersByPixels)
