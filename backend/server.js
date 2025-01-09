@@ -6,6 +6,7 @@ import connectDB from "./config/dbconnect.js";
 import userRouter from "./routes/userRouter.js";
 import pixelRouter from "./routes/pixelRouter.js";
 import canvasRouter from "./routes/canvasRouter.js";
+import "./utils/rateLimitCleanup.js"
 
 connectDB();
 
