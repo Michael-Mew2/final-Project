@@ -13,8 +13,8 @@ const KonvaCanvas = ({ selectedColor }) => {
   useEffect(() => {
     const stage = new Konva.Stage({
       container: "konva-container",
-      width: window.innerWidth * 0.449,
-      height: window.innerHeight * 0.499,
+      width: window.innerWidth,
+      height: window.innerHeight,
       draggable: true,
     });
 
@@ -74,7 +74,14 @@ const KonvaCanvas = ({ selectedColor }) => {
 
     stage.on("wheel", handleZoom);
 
+    const handleResize = () => {
+      stage.size({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       stage.destroy();
     };
   }, []);
@@ -83,9 +90,13 @@ const KonvaCanvas = ({ selectedColor }) => {
     <div
       id="konva-container"
       style={{
-        width: "45vw",
-        height: "50vh",
-        border: "1px solid black",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 0,
+        overflow: "hidden",
       }}
     ></div>
   );
