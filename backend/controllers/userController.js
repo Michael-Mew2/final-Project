@@ -102,9 +102,10 @@ export async function loginUser(req, res) {
       // Reset nach Timeout
       user.loginAttempts = 0;
     }
-
+    console.log("front end cleartext password:", password);
+    
     const passwordMatch = await user.authenticate(password);
-    // console.log(passwordMatch);
+    console.log(passwordMatch);
     if (!passwordMatch) {
       user.loginAttempts = (user.loginAttempts || 0) + 1;
       user.lastLoginAttempt = new Date();
