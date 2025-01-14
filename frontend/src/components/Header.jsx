@@ -15,13 +15,14 @@ import {
 import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
 import Register from "./Register";
+import useRegisterStore from "../stores/useRegisterStore";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showRegisterMenu, setShowRegisterMenu] = useState(false); // Steuerung des Registrierungsmenüs
+  const {showRegisterMenu, setShowRegisterMenu} = useRegisterStore();// Steuerung des Registrierungsmenüs
   const [error, setError] = useState("");
 
   const toggleDarkMode = () => {

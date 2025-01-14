@@ -16,7 +16,10 @@ const app = express();
 
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors({
+  origin:"http://localhost:5173", // Frontend-URL
+  credentials: true, // Allows sending Cookies
+}));
 
 app.use(express.json());
 
