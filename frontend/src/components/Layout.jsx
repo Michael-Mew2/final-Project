@@ -27,7 +27,6 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
-    // Verhindert Scrollbalken auf dem Body und HTML
     document.body.style.margin = "0";
     document.body.style.padding = "0";
     document.body.style.width = "100vw";
@@ -41,7 +40,6 @@ const Layout = ({ children }) => {
     document.documentElement.style.overflow = "hidden";
 
     return () => {
-      // Rückgängig machen der Änderungen
       document.body.style = "";
       document.documentElement.style = "";
     };
@@ -51,16 +49,16 @@ const Layout = ({ children }) => {
     position: "relative",
     width: "100vw",
     height: "100vh",
-    overflow: "hidden", // Verhindert Scrollbalken
+    overflow: "hidden",
   };
 
   const headerStyle = {
     position: "fixed",
     top: 0,
     left: 0,
-    width: "100%", // Header nutzt jetzt 100% der Breite
+    width: "100%",
     height: "60px",
-    backgroundColor: "#f8f8f8", // Beispiel-Hintergrundfarbe
+    backgroundColor: "#f8f8f8",
     zIndex: 10,
   };
 
@@ -68,9 +66,9 @@ const Layout = ({ children }) => {
     position: "fixed",
     bottom: 0,
     left: 0,
-    width: "100%", // Footer nutzt ebenfalls 100% der Breite
+    width: "100%",
     height: "50px",
-    backgroundColor: "#f8f8f8", // Beispiel-Hintergrundfarbe
+    backgroundColor: "#f8f8f8",
     zIndex: 10,
     display: "flex",
     justifyContent: "center",
@@ -79,7 +77,7 @@ const Layout = ({ children }) => {
 
   const paletteStyle = {
     position: "fixed",
-    bottom: "70px", // 20px über dem Footer
+    bottom: "70px",
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 10,
