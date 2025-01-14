@@ -51,7 +51,7 @@ function getStrength(password) {
       multiplier += 1;
     }
   });
-  return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+  return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 2);
 }
 
 // ----------
@@ -108,7 +108,7 @@ export default function Register() {
             transform: "translate(-50%, -50%)",
             zIndex: 2,
             width: "90%",
-            maxWidth: "400px",
+            maxWidth: "600px",
           }}
         >
           <Title order={3} mb="lg" style={{textTransform: "uppercase"}}>
