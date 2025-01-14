@@ -1,7 +1,7 @@
 # Using the backoffice
 
 ### Register a user 
-`POST: user/signin` -> Register new User to Site!
+`POST: users/signup` -> Register new User to Site!
 
 ```JSON
 {
@@ -13,7 +13,7 @@
 ```
 
 ### Log in as a registered user
-`POST: user/login` -> Log in to Site!
+`POST: users/login` -> Log in to Site!
 
 ```json
 {
@@ -28,7 +28,7 @@
 ### get general stats
 
 #### Get top user
-`GET: user/top-by-range` -> get a List of the Top users sorted by pixels placed
+`GET: users/top-by-range` -> get a List of the Top users sorted by pixels placed
 
 #### get information to a specific pixel on the canvas
 `GET: pixel/{x}/{y}` -> get the information of a specific pixel (position, color, user which changed it last, time it was changed last, history)
@@ -45,16 +45,16 @@
 ## logged in paths
 
 ### Log out 
-`POST: user/logout` -> Log out from the Site!
+`POST: users/logout` -> Log out from the Site!
 
 ### Show all users
-`GET: user/all` -> Show usernames and number of total placed Pixels from all users
+`GET: users/all` -> Show usernames and number of total placed Pixels from all users
 
 ### Show single user 
-`GET: user/:userId/display` -> Show all information about the logged in user
+`GET: users/:userId/display` -> Show all information about the logged in user
 
 ### Update user
-`PATCH: user/update/:userId` -> Update username, email and password of the logged in user
+`PATCH: users/update/:userId` -> Update username, email and password of the logged in user
 
 ### add a pixel
 `PUT: pixel/place` -> place/edit a pixel on the canvas
@@ -69,19 +69,19 @@
 
 ## admin paths
 ### Update user-data as admin
-`PATCH: user/update/:userId` -> Update username, email, role, isAllowedIn, isPremiumMember of a selected user 
+`PATCH: users/update/:userId` -> Update username, email, role, isAllowedIn, isPremiumMember of a selected user 
 
 ### Get all user as admin
-`GET: user/admin/users` -> Show all user with following information: username, email, birthdate, role, isAllowedIn, isPremiumMember, lastLoginTime, totalPixelsPlaced and placedPixel
+`GET: users/admin/users` -> Show all user with following information: username, email, birthdate, role, isAllowedIn, isPremiumMember, lastLoginTime, totalPixelsPlaced and placedPixel
 
 ### Block user
-`PUT: user/admin/users/:userId/block` -> Block the user with the corresponding :userId. Not possible to block an **admin** directly with this method
+`PUT: users/admin/users/:userId/block` -> Block the user with the corresponding :userId. Not possible to block an **admin** directly with this method
 
 ### Un-Block user
-`PUT: user/admin/users/:userId/unblock` -> Un-block the user with the corresponding :userId. Not possible to un-block an **admin** directly with this method
+`PUT: users/admin/users/:userId/unblock` -> Un-block the user with the corresponding :userId. Not possible to un-block an **admin** directly with this method
 
 ### Delete user
-`DELETE: user/admin/users/:userId/delete` -> Delete the user with the corresponding :userId. Not possible to delete an **admin** directly with this method
+`DELETE: users/admin/users/:userId/delete` -> Delete the user with the corresponding :userId. Not possible to delete an **admin** directly with this method
 
 ### get information for a selected section on the canvas
 `GET: canvas/section?xStart={xStart}&xEnd={xEnd}&yStart={yStart}&yEnd={yEnd}` -> get the all the informations for the pixels in the selected area: 

@@ -10,7 +10,7 @@ import { getTopUsersByPixels } from "../controllers/pixelController.js";
 const userRouter = express.Router();
 
 userRouter
-  .post("/signin", validateRequest(validateUser), user.createUser)
+  .post("/signup", validateRequest(validateUser), user.createUser)
   .post("/password-reset-request", user.requestPasswordReset)
   .post("/password-reset", user.resetPassword)
   .get("/validate-email/:token", user.validateEmail)

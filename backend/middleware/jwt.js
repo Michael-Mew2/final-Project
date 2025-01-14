@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { AUTH_CONFIG } from "../config/auth.config.js";
 
 const secret = process.env.JWT_SECRET;
-const TOKEN_EXP = process.env.JWT_EXPIRES_IN || "1";
-const COOKIE_MAX_AGE =
-  parseInt(process.env.COOKIE_EXPIRES_IN) || 60 * 60 * 1000;
+const TOKEN_EXP = process.env.JWT_EXPIRES_IN || "1h";
+const COOKIE_MAX_AGE = AUTH_CONFIG.COOKIE_MAX_AGE
 
 export const generateToken = (payload) => {
   if (typeof payload !== "object") {

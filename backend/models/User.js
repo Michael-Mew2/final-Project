@@ -116,8 +116,10 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function (next) {
   try {
-    const hash = await bcrypt.hash(this.password, 12);
-    this.password = hash;
+    if (this.isModified("password")) {
+      const hash = await bcrypt.hash(this.password, 12);
+      this.password = hash;
+    }
     next();
   } catch (error) {
     next(error);
@@ -125,7 +127,14 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.authenticate = async function (password) {
+  // const hash = await bcrypt.hash(password, 12);
+  // // console.log(hash);
+  console.log("hashed db-password:",this.password);
+  console.log("cleartext password:", password);
+  
+  
   return await bcrypt.compare(password, this.password);
+  // if(this.password === password) return true
 };
 
 userSchema.methods.toJSON = function () {

@@ -27,7 +27,7 @@ app.use(session({
   cookie: {secure: false},
 }))
 
-app.use("/user", userRouter)
+app.use("/users", userRouter)
 app.use("/pixel", pixelRouter)
 app.use("/canvas", canvasRouter)
 
