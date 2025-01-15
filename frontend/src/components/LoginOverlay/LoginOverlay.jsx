@@ -13,30 +13,41 @@ const LoginOverlay = ({ isOpen, onClose, onLogin }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+  const handleLogin = async () => {
     if (!username || !password) {
       setError("Bitte Benutzername und Passwort eingeben.");
       return;
     }
 
-    setError("");
+    try {
+      setError("");
 
-    if (username === "admin" && password === "password") {
-      onLogin({ username });
-      onClose();
-    } else {
-      setError("Ungültige Login-Daten. Bitte erneut versuchen.");
+      const response = await fetch(`${BASE_URL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onLogin(data.user);
+        onClose();
+      } else {
+        setError(data.msg || "Fehler beim Einloggen.");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Ein unerwarteter Fehler ist aufgetreten.");
     }
   };
 
   return (
-    <Modal
-      opened={isOpen}
-      onClose={onClose}
-      title="Einloggen"
-      centered
-    >
+    <Modal opened={isOpen} onClose={onClose} title="Einloggen" centered>
       <TextInput
         label="Benutzername"
         placeholder="Gib deinen Benutzernamen ein"
