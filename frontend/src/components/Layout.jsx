@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import KonvaCanvas from "./KonvaCanvas";
-import FarbPalette from "./FarbPalette";
-import LoginOverlay from "./LoginOverlay";
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
+import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
+import FarbPalette from "./FarbPalette/FarbPalette";
+import LoginOverlay from "./LoginOverlay/LoginOverlay";
+
 
 const Layout = ({ children }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
