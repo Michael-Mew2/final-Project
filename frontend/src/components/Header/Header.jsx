@@ -14,8 +14,8 @@ import {
 } from "@mantine/core";
 import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
-import Register from "./Register";
-import useRegisterStore from "../stores/useRegisterStore";
+import Register from "../Register/Register";
+import useRegisterStore from "../../stores/useRegisterStore.js";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);

@@ -18,8 +18,8 @@ import {
   Container,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useRegisterStore } from "../stores";
-import { registerApi } from "../api/userApi.js";
+import { useRegisterStore } from "../../stores/index.js";
+import { registerApi } from "../../api/userApi.js";
 
 // ==========
 
