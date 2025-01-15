@@ -1,6 +1,6 @@
 import { authenticateSocket } from "../middleware/jwt.js";
-import { validatePixelDataSocket } from "../middleware/validatePixelData";
-import { limitPixelChangesSocket } from "../middleware/limitPixelChanges";
+import { validatePixelDataSocket } from "../middleware/validatePixelData.js";
+import { limitPixelChangesSocket } from "../middleware/limitPixelChanges.js";
 import { handlePlacePixel } from "./placePixelHandler.js";
 
 export default function socketHandler(io, socket) {
