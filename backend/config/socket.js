@@ -1,5 +1,6 @@
-import {Server} from "socket.io";
+import {Server} from "socket.io"; 
 import Pixel from "../models/Pixel.js";
+import socketHandler from "../socketHandlers/socketHandler.js";
 
 const FRONTEND_URL = process.env.FRONTEND_URL
 
@@ -13,9 +14,14 @@ export const configureSocket = (server) => {
     });
 
     io.on("connection", (socket) => {
-        console.log("A user is connected");
+        console.log(`New client is connected: ${socket.id}`);
 
-        socket
-        
-    })
+        socketHandler(io, socket);
+
+        socket.on("disconnect", () => {
+            console.log(`Client disconnected: ${socket.id}`);
+        });
+    });
+
+    return io;
 }

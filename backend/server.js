@@ -1,3 +1,4 @@
+import http from "http";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -7,17 +8,24 @@ import userRouter from "./routes/userRouter.js";
 import pixelRouter from "./routes/pixelRouter.js";
 import canvasRouter from "./routes/canvasRouter.js";
 import "./utils/rateLimitCleanup.js"
-
-connectDB();
+import { configureSocket } from "./config/socket.js";
 
 const PORT = process.env.PORT || 3000;
-
+const FRONT_END = process.env.FRONT_END || "http://localhost:5173";
 const app = express();
+const server = http.createServer(app);
+const io = configureSocket(server);
+
+
+connectDB().catch(error => {
+  console.error("Error on connection the database:", error);
+  process.exit(1);
+});
 
 app.use(cookieParser());
 
 app.use(cors({
-  origin:"http://localhost:5173", // Frontend-URL
+  origin: FRONT_END, // Frontend-URL
   credentials: true, // Allows sending Cookies
 }));
 
@@ -34,6 +42,6 @@ app.use("/users", userRouter)
 app.use("/pixel", pixelRouter)
 app.use("/canvas", canvasRouter)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is listening on port: ${PORT}`)
 });
