@@ -1,5 +1,4 @@
 import {Server} from "socket.io"; 
-import Pixel from "../models/Pixel.js";
 import socketHandler from "../socketHandlers/socketHandler.js";
 
 const FRONTEND_URL = process.env.FRONTEND_URL
