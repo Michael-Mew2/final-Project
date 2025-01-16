@@ -6,11 +6,13 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 export const configureSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: FRONTEND_URL,
+      origin: process.env.NODE_ENV === 'development' ? '*' : FRONTEND_URL,
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     },
   });
+  console.log("Socket is running!");
+  
 
   io.on("connection", (socket) => {
     console.log(`New client is connected: ${socket.id}`);

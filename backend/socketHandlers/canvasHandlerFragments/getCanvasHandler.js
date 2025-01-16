@@ -2,10 +2,17 @@ import Pixel from "../../models/Pixel.js";
 
 const handleGetCanvas = async (socket) => {
   try {
+    // console.log("Fetching canvas ...");
+    
     const pixels = await Pixel.find({});
+    // console.log("Fetched pixels:", pixels);
+    
 
     if (!pixels || pixels.length <= 0) {
-      return socket.emit("emptyCanvas", { msg: "No pixels on canvas" });
+      // console.log("no pixels on canvas!");
+      
+      socket.emit("emptyCanvas", { msg: "No pixels on canvas" });
+      return
     }
 
     socket.emit("pixelsOnCanvas", { pixels });

@@ -11,7 +11,7 @@ import "./utils/rateLimitCleanup.js"
 import { configureSocket } from "./config/socket.js";
 
 const PORT = process.env.PORT || 3000;
-const FRONT_END = process.env.FRONT_END || "http://localhost:5173";
+const FRONT_END = process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : process.env.FRONTEND_URL;
 const app = express();
 const server = http.createServer(app);
 const io = configureSocket(server);

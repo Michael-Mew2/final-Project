@@ -41,6 +41,8 @@ export default async function handleGetUserStats(socket, data) {
       { $limit: parseLimit },
       { $project: { username: 1, totalPixelsPlaced: 1, pixelCount: 1 } },
     ]);
+    // console.log("Top users", topUsers);
+    
     socket.emit("userStats", { topUsers });
   } catch (error) {
     console.error("Error fetching user stats via socket", error);

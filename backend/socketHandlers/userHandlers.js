@@ -1,4 +1,4 @@
-import handleGetUserStats from "./userHandlerFragments/getUserStatsHandler";
+import handleGetUserStats from "./userHandlerFragments/getUserStatsHandler.js";
 
 export default function userHandlers(io, socket) {
   socket.on("getUserStats", async (data) => {
