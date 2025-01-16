@@ -24,7 +24,7 @@ const LoginOverlay = ({ isOpen, onClose, onLogin }) => {
     try {
       setError("");
 
-      const response = await fetch(`${BASE_URL}/api/login`, {
+      const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
