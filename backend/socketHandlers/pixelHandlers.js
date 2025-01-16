@@ -30,7 +30,8 @@ export default function pixelHandlers(io, socket) {
     try {
         await handleGetPixelStats(io, socket, data)
     } catch (error) {
-        
+        console.error("Error fetching pixel stats:", error.message);
+        socket.emit("error", {msg: error.message})
     }
   })
   
