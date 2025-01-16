@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
 import Layout from "./components/Layout"
+import { ColorProvider } from "./components/FarbPalette/ColorStore";
 
 import { MantineProvider } from "@mantine/core";
 // import TestComponent from "./components/TestComponent";
@@ -12,7 +13,9 @@ import { MantineProvider } from "@mantine/core";
 export default function App() {
   return (
     <MantineProvider>
-      <Layout/>
+      <ColorProvider>
+        <Layout />
+      </ColorProvider>
     </MantineProvider>
   );
 }

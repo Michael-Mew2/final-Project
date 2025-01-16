@@ -1,16 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { MantineProvider } from "@mantine/core";
-import Layout from "./components/Layout";
-import { ColorProvider } from "./components/FarbPalette/ColorStore";
+import App from "./App"
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <MantineProvider>
-      <ColorProvider>
-        <Layout />
-      </ColorProvider>
-    </MantineProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
