@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
+import { useColorStore } from "../FarbPalette/ColorStore";
 
-const KonvaCanvas = ({ selectedColor }) => {
+const KonvaCanvas = () => {
+  const { selectedColor } = useColorStore();
   const stageRef = useRef(null);
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);
@@ -9,6 +11,7 @@ const KonvaCanvas = ({ selectedColor }) => {
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
+
 
   useEffect(() => {
     const stage = new Konva.Stage({
@@ -86,20 +89,7 @@ const KonvaCanvas = ({ selectedColor }) => {
     };
   }, []);
 
-  return (
-    <div
-      id="konva-container"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: 0,
-        overflow: "hidden",
-      }}
-    ></div>
-  );
+  return <div id="konva-container" style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0, overflow: "hidden" }}></div>;
 };
 
 export default KonvaCanvas;

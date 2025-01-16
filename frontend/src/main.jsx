@@ -1,12 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import "@mantine/core/styles.css";
+import React from "react";
+import ReactDOM from "react-dom";
+import { MantineProvider } from "@mantine/core";
+import Layout from "./components/Layout";
+import { ColorProvider } from "./components/FarbPalette/ColorStore";
 
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.render(
+  <React.StrictMode>
+    <MantineProvider>
+      <ColorProvider>
+        <Layout />
+      </ColorProvider>
+    </MantineProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);

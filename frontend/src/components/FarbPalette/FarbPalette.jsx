@@ -1,26 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "./FarbPalette.css";
+import { useColorStore } from "./ColorStore";
 
-const colors = [
-  "#FF5733", // Rot
-  "#33FF57", // Grün
-  "#3357FF", // Blau
-  "#FFD700", // Gold
-  "#800080", // Lila
-  "#FF1493", // Pink
-  "#00CED1", // Türkis
-  "#A52A2A", // Braun
-];
+const colors = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#800080", "#FF1493", "#00CED1", "#A52A2A"];
 
-const FarbPalette = ({ onColorSelect }) => {
-  const [selectedColor, setSelectedColor] = useState(null);
-
-  const handleColorClick = (color) => {
-    setSelectedColor(color);
-    if (onColorSelect) {
-      onColorSelect(color); // Farbe an eine übergeordnete Komponente zurückgeben
-    }
-  };
+const FarbPalette = () => {
+  const { selectedColor, setSelectedColor } = useColorStore();
 
   return (
     <div className="color-palette">
@@ -29,7 +14,7 @@ const FarbPalette = ({ onColorSelect }) => {
           key={color}
           className={`color-circle ${selectedColor === color ? "selected" : ""}`}
           style={{ backgroundColor: color }}
-          onClick={() => handleColorClick(color)}
+          onClick={() => setSelectedColor(color)}
         ></div>
       ))}
     </div>
