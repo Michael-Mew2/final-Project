@@ -14,13 +14,14 @@ import {
 } from "@mantine/core";
 import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
+import "./header.css";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showRegisterMenu, setShowRegisterMenu] = useState(false); // Steuerung des Registrierungsmenüs
+  const [showRegisterMenu, setShowRegisterMenu] = useState(false);
   const [error, setError] = useState("");
 
   const toggleDarkMode = () => {
@@ -53,7 +54,7 @@ const HeaderComponent = () => {
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
     console.log("Registrierung abgeschlossen!");
-    setShowRegisterMenu(false); // Schließt das Registrierungsmenü
+    setShowRegisterMenu(false);
   };
 
   return (

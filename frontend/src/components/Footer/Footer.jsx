@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Group, Text, ActionIcon } from "@mantine/core";
 import { BrandGithub, BrandLinkedin, BrandTwitter } from "tabler-icons-react";
+import "./footer.css";
 
 const FooterComponent = () => {
   return (

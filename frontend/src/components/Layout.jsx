@@ -5,6 +5,7 @@ import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
 import FarbPalette from "./FarbPalette/FarbPalette";
 import LoginOverlay from "./LoginOverlay/LoginOverlay";
 import { useColorStore } from "./FarbPalette/ColorStore";
+import "./Layout.css";
 
 const Layout = ({ children }) => {
   const { selectedColor } = useColorStore();
@@ -45,44 +46,7 @@ const Layout = ({ children }) => {
     };
   }, []);
 
-  const layoutStyle = {
-    position: "relative",
-    width: "100vw",
-    height: "100vh",
-    overflow: "hidden",
-  };
-
-  const headerStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "60px",
-    backgroundColor: "#f8f8f8",
-    zIndex: 10,
-  };
-
-  const footerStyle = {
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: "50px",
-    backgroundColor: "#f8f8f8",
-    zIndex: 10,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
-  const paletteStyle = {
-    position: "fixed",
-    bottom: "70px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    zIndex: 10,
-  };
-
+  
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
       <KonvaCanvas selectedColor={selectedColor} />
@@ -92,7 +56,7 @@ const Layout = ({ children }) => {
       <div style={{ position: "fixed", bottom: "70px", left: "50%", transform: "translateX(-50%)", zIndex: 10 }}>
         <FarbPalette />
       </div>
-      <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "50px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
+      <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "45px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Footer />
       </footer>
       <LoginOverlay isOpen={false} onClose={() => {}} onLogin={() => {}} />
