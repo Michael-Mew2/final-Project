@@ -19,6 +19,8 @@ export const getCanvasSection = async (req, res) => {
   }
 };
 
+// ----------
+
 // gesamte Leinwand anzeigen:
 export const getFullCanvas = async (req, res) => {
     try {

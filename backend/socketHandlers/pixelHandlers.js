@@ -1,10 +1,11 @@
 import { authenticateSocket } from "../middleware/jwt.js";
 import { validatePixelDataSocket } from "../middleware/validatePixelData.js";
 import { limitPixelChangesSocket } from "../middleware/limitPixelChanges.js";
-import { handlePlacePixel } from "./placePixelHandler.js";
+import { handlePlacePixel } from "./pixelHandlerFragments/placePixelHandler.js";
+import { handleGetPixelStats } from "./pixelHandlerFragments/getPixelStatsHandler.js";
 
-export default function socketHandler(io, socket) {
-  // listen for place-pixel:
+export default function pixelHandlers(io, socket) {
+    // listen for placePixel:
   socket.on("placePixel", async (data) => {
     try {
       authenticateSocket(socket, next);
@@ -23,4 +24,15 @@ export default function socketHandler(io, socket) {
         socket.emit("error", {msg: error.message})
     }
   });
+
+  // listen for getPixelStats:
+  socket.on("getPixelStats", async (data) => {
+    try {
+        await handleGetPixelStats(io, socket, data)
+    } catch (error) {
+        console.error("Error fetching pixel stats:", error.message);
+        socket.emit("error", {msg: error.message})
+    }
+  })
+  
 };

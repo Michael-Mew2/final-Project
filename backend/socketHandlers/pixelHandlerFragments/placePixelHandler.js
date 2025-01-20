@@ -1,5 +1,5 @@
-import Pixel from "../models/Pixel.js";
-import User from "../models/User.js";
+import Pixel from "../../models/Pixel.js";
+import User from "../../models/User.js";
 
 export const handlePlacePixel = async (io, socket, data) => {
   const { x, y, color } = data;
