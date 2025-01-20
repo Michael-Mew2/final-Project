@@ -3,10 +3,10 @@ const validateRequest = (validateFn) => (req, res, next) => {
   // console.log(req.body, isValid);
   
   if (!isValid) {
-    console.error("Validation failed:", validateFn.errors);
+    // console.error("Validation failed:", validateFn.errors);
     
     const errors = validateFn.errors.map((err) => err.message);
-    console.log(errors);
+    // console.log(errors);
     
     return res.status(400).json({ errors });
   }

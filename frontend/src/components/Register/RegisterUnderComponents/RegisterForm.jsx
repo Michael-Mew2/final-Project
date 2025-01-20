@@ -8,7 +8,7 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { IconHeart } from "@tabler/icons-react";
+import { IconArrowRight, IconHeart, IconX } from "@tabler/icons-react";
 import { PasswordInputWithStrength } from "./PasswordInputWithStrength";
 import { RegistrationAlerts } from "./RegistrationAlerts";
 import { useRegisterStore } from "../../../stores/";
@@ -62,12 +62,12 @@ export function RegisterForm({ onSubmit }) {
           maxDate={new Date()}
         />
         <Checkbox
-        color="green"
+          color="green"
           required
           label="I accept the terms and conditions of this community and accept the resulting consequences if I break the rules"
         />
         <Checkbox
-        color="teal"
+          color="teal"
           required
           label="I accept the data agreement of our community"
         />
@@ -81,10 +81,15 @@ export function RegisterForm({ onSubmit }) {
             variant="light"
             color="red"
             onClick={() => setShowRegisterMenu(false)}
+            rightSection={<IconX size={20} />}
           >
             Cancel
           </Button>
-          <Button type="submit" color="teal">
+          <Button
+            type="submit"
+            color="teal"
+            rightSection={<IconArrowRight size={20} />}
+          >
             Sign up!
           </Button>
         </Group>
