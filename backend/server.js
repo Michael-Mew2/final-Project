@@ -16,7 +16,6 @@ const app = express();
 const server = http.createServer(app);
 const io = configureSocket(server);
 
-
 connectDB().catch(error => {
   console.error("Error on connection the database:", error);
   process.exit(1);
