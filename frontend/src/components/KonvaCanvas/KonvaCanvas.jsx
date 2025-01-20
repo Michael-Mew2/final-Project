@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
 import { useColorStore } from "../FarbPalette/ColorStore";
+import { io } from "socket.io-client";
+
 
 const KonvaCanvas = () => {
   const { selectedColor } = useColorStore();
@@ -8,12 +10,18 @@ const KonvaCanvas = () => {
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);
 
+  // Verweis auf die Socket.IO-Instanz
+  const socketRef = useRef(null);
+
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
 
 
   useEffect(() => {
+    // Verbindung zum Socket.IO-Server herstellen
+    socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
+
     const stage = new Konva.Stage({
       container: "konva-container",
       width: window.innerWidth,
@@ -29,6 +37,9 @@ const KonvaCanvas = () => {
     const GRID_SIZE = 50;
     const PIXEL_SIZE = 10;
 
+    // Array zum Speichern der Rechtecke (für einfache Updates)
+    const pixelRects = [];
+
     for (let y = 0; y < GRID_SIZE; y++) {
       for (let x = 0; x < GRID_SIZE; x++) {
         const rect = new Konva.Rect({
@@ -41,16 +52,35 @@ const KonvaCanvas = () => {
           strokeWidth: 1,
         });
 
+        // Klicken auf ein Pixel
         rect.on("click", () => {
-          rect.fill(colorRef.current);
+          const newColor = colorRef.current;
+          rect.fill(newColor);
           layer.batchDraw();
+
+          // Sende das geänderte Pixel an den Server
+          socketRef.current.emit("put_pixel", {
+            x,
+            y,
+            color: newColor,
+          });
         });
 
         layer.add(rect);
+        pixelRects.push({ x, y, rect });
       }
     }
 
     layer.batchDraw();
+
+    // Empfange Updates vom Server
+    socketRef.current.on("update_pixel", ({ x, y, color }) => {
+      const pixel = pixelRects.find((p) => p.x === x && p.y === y);
+      if (pixel) {
+        pixel.rect.fill(color);
+        layer.batchDraw();
+      }
+    });
 
     const handleZoom = (e) => {
       e.evt.preventDefault();
@@ -86,6 +116,11 @@ const KonvaCanvas = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       stage.destroy();
+
+      // Socket-Verbindung schließen
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
   }, []);
 
