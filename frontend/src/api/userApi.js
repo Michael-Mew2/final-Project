@@ -28,3 +28,11 @@ export const registerApi = async (username, email, password, birthdate) => {
     throw error;
   }
 };
+
+export const loginApi = async (email, password) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}

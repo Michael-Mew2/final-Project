@@ -105,11 +105,11 @@ const Layout = ({ children }) => {
       </footer>
 
       {/* Login Overlay */}
-      <LoginOverlay
+      {/* <LoginOverlay
         isOpen={isLoginOpen}
         onClose={handleLoginClose}
         onLogin={handleLogin}
-      />
+      /> */}
     </div>
   );
 };

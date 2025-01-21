@@ -16,6 +16,7 @@ import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
 import Register from "../Register/Register";
 import useRegisterStore from "../../stores/useRegisterStore.js";
+import LoginRegisterCard from "../LoginRegisterCard/LoginRegisterCard.jsx";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -129,7 +130,7 @@ const HeaderComponent = () => {
       </Container>
 
       {/* Registration Menu */}
-      {showRegisterMenu && (<Register />)}
+      {showRegisterMenu && (<LoginRegisterCard />)}
     </div>
   );
 };

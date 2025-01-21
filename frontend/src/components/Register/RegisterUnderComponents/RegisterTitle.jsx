@@ -8,7 +8,7 @@ export function RegisterTitle() {
   const alertDefaultIcon = <IconHeart />;
   return (
     <>
-      <Title order={3} mb="lg" style={{ textTransform: "uppercase" }}>
+      <Title order={3} mt="lg" mb="lg" style={{ textTransform: "uppercase" }}>
         Join us!
       </Title>
       {backendError || successMessage ? (
