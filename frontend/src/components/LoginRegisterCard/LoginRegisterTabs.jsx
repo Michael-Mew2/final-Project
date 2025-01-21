@@ -2,6 +2,7 @@ import { Tabs } from "@mantine/core";
 import { IconUser, IconUserEdit } from "@tabler/icons-react";
 import * as React from "react";
 import Register from "../Register/Register";
+import Login from "../Login/Login";
 
 export default function LoginRegisterTabs() {
   return (
@@ -26,7 +27,9 @@ export default function LoginRegisterTabs() {
           padding: "0.5rem", // Padding für Inhalt
         }}
       >
-        <Tabs.Panel value="signin">Lets Log In!</Tabs.Panel>
+        <Tabs.Panel value="signin">
+            <Login />
+        </Tabs.Panel>
         <Tabs.Panel value="signup">
           <Register />
         </Tabs.Panel>
