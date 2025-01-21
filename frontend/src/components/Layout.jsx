@@ -115,7 +115,6 @@ const Layout = ({ children }) => {
       <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "50px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Footer />
       </footer>
-      <LoginOverlay isOpen={false} onClose={() => {}} onLogin={() => {}} />
     </div>
   );
 };
