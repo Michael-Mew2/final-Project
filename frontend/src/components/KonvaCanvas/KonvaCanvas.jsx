@@ -1,8 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
+import { useColorStore } from "../FarbPalette/ColorStore";
 import { io } from "socket.io-client";
 
-const KonvaCanvas = ({ selectedColor }) => {
+
+const KonvaCanvas = () => {
+  const { selectedColor } = useColorStore();
   const stageRef = useRef(null);
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);
@@ -12,6 +15,7 @@ const KonvaCanvas = ({ selectedColor }) => {
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
+
 
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
@@ -127,20 +131,7 @@ const KonvaCanvas = ({ selectedColor }) => {
     };
   }, []);
 
-  return (
-    <div
-      id="konva-container"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: 0,
-        overflow: "hidden",
-      }}
-    ></div>
-  );
+  return <div id="konva-container" style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0, overflow: "hidden" }}></div>;
 };
 
 export default KonvaCanvas;

@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export const registerApi = async (username, email, password, birthdate) => {
   try {
-    console.log(BASE_URL);
+    // console.log(BASE_URL);
 
     const response = await fetch(BASE_URL + "/users/signup", {
       method: "POST",
@@ -15,23 +15,16 @@ export const registerApi = async (username, email, password, birthdate) => {
       credentials: "include",
     });
 
-    // Überprüfen des HTTP-Statuscodes
+    const data = await response.json();
+    
     if (!response.ok) {
-      // Hier kannst du ein eigenes Fehlerhandling für andere Statuscodes einbauen
-      const errorData = await response.json();
-      throw new Error(`Error: ${errorData.message || response.statusText}`);
+      if (data.errors && Array.isArray(data.errors)) {
+        throw new Error(data.errors.join(", "));
+      }
+      throw new Error(data.msg || "Registration failed. Please try again later!")
     }
-
-    if (response.status === 201) {
-      return console.log("Registration successful!!");
-    } else if (response.status === 409) {
-      return console.log("User already exists");
-    } else if (response.status === 226) {
-      return console.log("Username already taken!");
-    } else {
-      throw new Error("Registration failed!");
-    }
+    return data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };

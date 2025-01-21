@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
@@ -10,6 +10,7 @@ const Layout = ({ children }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#000000");
   const [socket, setSocket] = useState(null);
+
 
   const handleLoginOpen = () => {
     setIsLoginOpen(true);
@@ -94,35 +95,27 @@ const Layout = ({ children }) => {
     bottom: "70px",
     left: "50%",
     transform: "translateX(-50%)",
-    zIndex: 10,
+    zIndex: 0,
   };
 
   return (
-    <div style={layoutStyle}>
+    
       {/* Vollbild-Raster */}
+     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
       <KonvaCanvas selectedColor={selectedColor} socket={socket} />
 
       {/* Header */}
-      <header style={headerStyle}>
+      <header style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "60px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Header onLoginClick={handleLoginOpen} />
+
       </header>
-
-      {/* Farbpalette */}
-      <div style={paletteStyle}>
-        <FarbPalette onColorSelect={handleColorSelect} />
+      <div style={{ position: "fixed", bottom: "70px", left: "50%", transform: "translateX(-50%)", zIndex: 10 }}>
+        <FarbPalette />
       </div>
-
-      {/* Footer */}
-      <footer style={footerStyle}>
+      <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "50px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Footer />
       </footer>
-
-      {/* Login Overlay */}
-      <LoginOverlay
-        isOpen={isLoginOpen}
-        onClose={handleLoginClose}
-        onLogin={handleLogin}
-      />
+      <LoginOverlay isOpen={false} onClose={() => {}} onLogin={() => {}} />
     </div>
   );
 };
