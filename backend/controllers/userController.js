@@ -20,12 +20,12 @@ export async function createUser(req, res) {
     ]);
 
     if (existingEmail) {
-      console.log("User already exists");
+      // console.log("User already exists");
       return res.status(400).json({ msg: "User already exists" });
     }
 
     if (existingUsername) {
-      console.log("Username already taken!");
+      // console.log("Username already taken!");
       return res.status(226).json({ msg: "Username already taken" });
     }
 
@@ -36,7 +36,7 @@ export async function createUser(req, res) {
       validationToken,
       loginAttempts: 0,
     });
-    console.log("newUser:", user);
+    // console.log("newUser:", user);
 
     const validationUrl = `${process.env.FRONTEND_URL}/validate-email/${validationToken}`;
     await sendEmail({

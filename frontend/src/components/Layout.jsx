@@ -80,7 +80,7 @@ const Layout = ({ children }) => {
     bottom: "70px",
     left: "50%",
     transform: "translateX(-50%)",
-    zIndex: 10,
+    zIndex: 0,
   };
 
   return (
