@@ -18,6 +18,7 @@ import Register from "../Register/Register";
 import useRegisterStore from "../../stores/useRegisterStore.js";
 import LoginRegisterCard from "../LoginRegisterCard/LoginRegisterCard.jsx";
 
+
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [username, setUsername] = useState("");
@@ -52,8 +53,6 @@ const HeaderComponent = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
-
-  
 
   return (
     <div style={{ height: 70, padding: "0 16px", backgroundColor: "lightblue" }}>

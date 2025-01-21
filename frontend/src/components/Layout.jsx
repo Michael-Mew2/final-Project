@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
 import FarbPalette from "./FarbPalette/FarbPalette";
 import LoginOverlay from "./LoginOverlay/LoginOverlay";
-
+import { io } from "socket.io-client";
 
 const Layout = ({ children }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#000000");
+  const [socket, setSocket] = useState(null);
+
 
   const handleLoginOpen = () => {
     setIsLoginOpen(true);
@@ -26,6 +28,18 @@ const Layout = ({ children }) => {
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
+
+  useEffect(() => {
+    const newSocket = io(import.meta.env.VITE_API_BASE_URL);
+    setSocket(newSocket);
+
+    console.log("Socket.IO verbunden");
+
+    return () => {
+      newSocket.disconnect();
+      console.log("Socket.IO getrennt");
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.margin = "0";
@@ -85,31 +99,22 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div style={layoutStyle}>
+    
       {/* Vollbild-Raster */}
-      <KonvaCanvas selectedColor={selectedColor} />
+     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+      <KonvaCanvas selectedColor={selectedColor} socket={socket} />
 
       {/* Header */}
-      <header style={headerStyle}>
+      <header style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "60px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Header onLoginClick={handleLoginOpen} />
+
       </header>
-
-      {/* Farbpalette */}
-      <div style={paletteStyle}>
-        <FarbPalette onColorSelect={handleColorSelect} />
+      <div style={{ position: "fixed", bottom: "70px", left: "50%", transform: "translateX(-50%)", zIndex: 10 }}>
+        <FarbPalette />
       </div>
-
-      {/* Footer */}
-      <footer style={footerStyle}>
+      <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "50px", backgroundColor: "#f8f8f8", zIndex: 10 }}>
         <Footer />
       </footer>
-
-      {/* Login Overlay */}
-      {/* <LoginOverlay
-        isOpen={isLoginOpen}
-        onClose={handleLoginClose}
-        onLogin={handleLogin}
-      /> */}
     </div>
   );
 };
