@@ -8,7 +8,7 @@ const FarbPalette = () => {
   const { selectedColor, setSelectedColor } = useColorStore();
 
   return (
-    <div className="color-palette">
+    <div className="color-palette-container">
       {colors.map((color) => (
         <div
           key={color}

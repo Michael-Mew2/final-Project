@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
 import { useColorStore } from "../FarbPalette/ColorStore";
+import "./KonvaCanvas.css";
 import { io } from "socket.io-client";
 
 

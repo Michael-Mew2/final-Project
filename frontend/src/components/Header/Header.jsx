@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
+import "./header.css";
 import Register from "../Register/Register";
 import useRegisterStore from "../../stores/useRegisterStore.js";
 import LoginRegisterCard from "../LoginRegisterCard/LoginRegisterCard.jsx";
@@ -25,6 +26,7 @@ const HeaderComponent = () => {
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const {showRegisterMenu, setShowRegisterMenu} = useRegisterStore();// Steuerung des Registrierungsmenüs
+
   const [error, setError] = useState("");
 
   const toggleDarkMode = () => {
