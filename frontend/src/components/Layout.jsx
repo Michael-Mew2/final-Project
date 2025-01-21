@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
@@ -64,8 +64,6 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    
-      {/* Vollbild-Raster */}
      <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
       <KonvaCanvas selectedColor={selectedColor} socket={socket} />
 
