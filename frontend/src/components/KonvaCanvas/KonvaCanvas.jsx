@@ -7,7 +7,6 @@ const KonvaCanvas = ({ selectedColor }) => {
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);
 
-  // Verweis auf die Socket.IO-Instanz
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -15,7 +14,6 @@ const KonvaCanvas = ({ selectedColor }) => {
   }, [selectedColor]);
 
   useEffect(() => {
-    // Verbindung zum Socket.IO-Server herstellen
     socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
 
     const stage = new Konva.Stage({
@@ -33,7 +31,6 @@ const KonvaCanvas = ({ selectedColor }) => {
     const GRID_SIZE = 50;
     const PIXEL_SIZE = 10;
 
-    // Array zum Speichern der Rechtecke (für einfache Updates)
     const pixelRects = [];
 
     for (let y = 0; y < GRID_SIZE; y++) {
@@ -48,14 +45,12 @@ const KonvaCanvas = ({ selectedColor }) => {
           strokeWidth: 1,
         });
 
-        // Klicken auf ein Pixel
         rect.on("click", () => {
           const newColor = colorRef.current;
           rect.fill(newColor);
           layer.batchDraw();
 
-          // Sende das geänderte Pixel an den Server
-          socketRef.current.emit("put_pixel", {
+          socketRef.current.emit("placePixel", {
             x,
             y,
             color: newColor,
@@ -69,7 +64,20 @@ const KonvaCanvas = ({ selectedColor }) => {
 
     layer.batchDraw();
 
-    // Empfange Updates vom Server
+    const updateCanvas = (canvasData) => {
+      canvasData.forEach(({ x, y, color }) => {
+        const pixel = pixelRects.find((p) => p.x === x && p.y === y);
+        if (pixel) {
+          pixel.rect.fill(color);
+        }
+      });
+      layer.batchDraw();
+    };
+
+    socketRef.current.emit("getCanvas", {}, (canvasData) => {
+      updateCanvas(canvasData);
+    });
+
     socketRef.current.on("update_pixel", ({ x, y, color }) => {
       const pixel = pixelRects.find((p) => p.x === x && p.y === y);
       if (pixel) {
@@ -113,7 +121,6 @@ const KonvaCanvas = ({ selectedColor }) => {
       window.removeEventListener("resize", handleResize);
       stage.destroy();
 
-      // Socket-Verbindung schließen
       if (socketRef.current) {
         socketRef.current.disconnect();
       }

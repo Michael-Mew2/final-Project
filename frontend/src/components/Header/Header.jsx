@@ -16,6 +16,7 @@ import { Sun, Moon, DotsVertical } from "tabler-icons-react";
 import "@mantine/core/styles.css";
 import Register from "../Register/Register";
 import useRegisterStore from "../../stores/useRegisterStore.js";
+import userStore from "../../stores/userStore.js";
 
 const HeaderComponent = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -51,8 +52,6 @@ const HeaderComponent = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
-
-  
 
   return (
     <div style={{ height: 70, padding: "0 16px", backgroundColor: "lightblue" }}>

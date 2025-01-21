@@ -4,11 +4,12 @@ import Footer from "./Footer/Footer";
 import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
 import FarbPalette from "./FarbPalette/FarbPalette";
 import LoginOverlay from "./LoginOverlay/LoginOverlay";
-
+import { io } from "socket.io-client";
 
 const Layout = ({ children }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#000000");
+  const [socket, setSocket] = useState(null);
 
   const handleLoginOpen = () => {
     setIsLoginOpen(true);
@@ -26,6 +27,18 @@ const Layout = ({ children }) => {
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
+
+  useEffect(() => {
+    const newSocket = io(import.meta.env.VITE_API_BASE_URL);
+    setSocket(newSocket);
+
+    console.log("Socket.IO verbunden");
+
+    return () => {
+      newSocket.disconnect();
+      console.log("Socket.IO getrennt");
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.margin = "0";
@@ -87,7 +100,7 @@ const Layout = ({ children }) => {
   return (
     <div style={layoutStyle}>
       {/* Vollbild-Raster */}
-      <KonvaCanvas selectedColor={selectedColor} />
+      <KonvaCanvas selectedColor={selectedColor} socket={socket} />
 
       {/* Header */}
       <header style={headerStyle}>
