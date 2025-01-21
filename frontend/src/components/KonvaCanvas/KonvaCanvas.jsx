@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from "react";
 import Konva from "konva";
 import { useColorStore } from "../FarbPalette/ColorStore";
 import "./KonvaCanvas.css";
+import { io } from "socket.io-client";
+
 
 const KonvaCanvas = () => {
   const { selectedColor } = useColorStore();
@@ -9,12 +11,16 @@ const KonvaCanvas = () => {
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);
 
+  const socketRef = useRef(null);
+
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
 
 
   useEffect(() => {
+    socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
+
     const stage = new Konva.Stage({
       container: "konva-container",
       width: window.innerWidth,
@@ -30,6 +36,8 @@ const KonvaCanvas = () => {
     const GRID_SIZE = 50;
     const PIXEL_SIZE = 10;
 
+    const pixelRects = [];
+
     for (let y = 0; y < GRID_SIZE; y++) {
       for (let x = 0; x < GRID_SIZE; x++) {
         const rect = new Konva.Rect({
@@ -43,15 +51,45 @@ const KonvaCanvas = () => {
         });
 
         rect.on("click", () => {
-          rect.fill(colorRef.current);
+          const newColor = colorRef.current;
+          rect.fill(newColor);
           layer.batchDraw();
+
+          socketRef.current.emit("placePixel", {
+            x,
+            y,
+            color: newColor,
+          });
         });
 
         layer.add(rect);
+        pixelRects.push({ x, y, rect });
       }
     }
 
     layer.batchDraw();
+
+    const updateCanvas = (canvasData) => {
+      canvasData.forEach(({ x, y, color }) => {
+        const pixel = pixelRects.find((p) => p.x === x && p.y === y);
+        if (pixel) {
+          pixel.rect.fill(color);
+        }
+      });
+      layer.batchDraw();
+    };
+
+    socketRef.current.emit("getCanvas", {}, (canvasData) => {
+      updateCanvas(canvasData);
+    });
+
+    socketRef.current.on("update_pixel", ({ x, y, color }) => {
+      const pixel = pixelRects.find((p) => p.x === x && p.y === y);
+      if (pixel) {
+        pixel.rect.fill(color);
+        layer.batchDraw();
+      }
+    });
 
     const handleZoom = (e) => {
       e.evt.preventDefault();
@@ -87,6 +125,10 @@ const KonvaCanvas = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       stage.destroy();
+
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
   }, []);
 

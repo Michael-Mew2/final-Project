@@ -4,7 +4,7 @@ import { AUTH_CONFIG } from "../config/auth.config.js";
 
 const secret = process.env.JWT_SECRET;
 const TOKEN_EXP = process.env.JWT_EXPIRES_IN || "1h";
-const COOKIE_MAX_AGE = AUTH_CONFIG.COOKIE_MAX_AGE
+const COOKIE_MAX_AGE = AUTH_CONFIG.COOKIE_MAX_AGE;
 
 export const generateToken = (payload) => {
   if (typeof payload !== "object") {
@@ -77,5 +77,46 @@ export const authenticate = async (req, res, next) => {
   } catch (error) {
     console.error("Authentication error:", error);
     return res.status(403).json({ msg: "Authentication failed!" });
+  }
+};
+
+export const authenticateSocket = async (socket, next) => {
+  try {
+    const token = socket.handshake.auth.token;
+
+    if (!token) return next(new Error("Authentication failed: no token!"));
+
+    let decoded;
+
+    try {
+      decoded = verifyToken(token);
+    } catch (error) {
+      if (error.name === "TokenExpiredError") {
+        return next(new Error("msg: Session expired. Please login again."));
+      }
+      return next(new Error("Invalid token!"));
+    }
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return next(new Error("User not found!"));
+    }
+
+    // Token erneuern, wenn er in weniger als 5 Minuten abläuft !!Damit das geht, muss der Client (das Frontend) den Token local speichern (im localstorage)!!
+    const tokenExp = decoded.exp * 1000;
+    const fiveMinutes = 5 * 60 * 1000;
+
+    if (tokenExp - Date.now() < fiveMinutes) {
+      const newToken = generateToken({ userId: user._id });
+      
+      socket.emit("tokenRenewal", {token: newToken})
+    }
+
+    socket.user = { id: user._id, role: user.role };
+    next();
+    
+  } catch (error) {
+    console.error("Authentication error:", error);
+    next(new Error("Authentication failed"));
   }
 };

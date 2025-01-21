@@ -1,9 +1,9 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "@mantine/core/styles.css";
+import '@mantine/dates/styles.css';
 import Layout from "./components/Layout"
 import { ColorProvider } from "./components/FarbPalette/ColorStore";
-
 import { MantineProvider } from "@mantine/core";
 
 export default function App() {
