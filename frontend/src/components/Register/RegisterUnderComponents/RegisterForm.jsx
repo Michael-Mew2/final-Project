@@ -12,13 +12,18 @@ import { IconArrowRight, IconHeart, IconX } from "@tabler/icons-react";
 import { PasswordInputWithStrength } from "./PasswordInputWithStrength";
 import { RegistrationAlerts } from "./RegistrationAlerts";
 import { useRegisterStore } from "../../../stores/";
+import { useNavigate } from "react-router-dom";
 
 export function RegisterForm({ onSubmit }) {
-  const { setShowRegisterMenu } = useRegisterStore();
   const [password, setPassword] = React.useState("");
   const [checkPassword, setCheckPassword] = React.useState("");
-
+  const navigate = useNavigate()
   const passwordsMatch = password === checkPassword && password.length > 0;
+
+
+  const handleCancel = () => {
+    navigate("/")
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -80,7 +85,7 @@ export function RegisterForm({ onSubmit }) {
           <Button
             variant="light"
             color="red"
-            onClick={() => setShowRegisterMenu(false)}
+            onClick={handleCancel}
             rightSection={<IconX size={20} />}
           >
             Cancel

@@ -8,21 +8,33 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 export default function LoginRegisterTabs() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = React.useState(searchParams.get("tab") || "signin")
 
   const currentTab = searchParams.get("tab") || "signin";
 
   const handleTabChange = (value) => {
+    setActiveTab(value);
     setSearchParams({ tab: value });
+    navigate(`/sign?tab=${value}`)
   };
+
+  React.useEffect(() => {
+    const currentTab = searchParams.get("tab");
+    if (currentTab && currentTab !== activeTab) {
+      setActiveTab(currentTab);
+    }
+  }, [searchParams])
 
   return (
     <Tabs
+      defaultValue={activeTab}
+      value={currentTab}
+      onChange={handleTabChange}
       color="teal"
       variant="outline"
-      value={currentTab}
-      onTabChange={handleTabChange}
+      // mt="2rem"
     >
-      <Tabs.List style={{ position: "sticky", top: 0 }}>
+      <Tabs.List style={{ position: "sticky", top: "0" }}>
         <Tabs.Tab value="signin" leftSection={<IconUser size={14} />}>
           Login
         </Tabs.Tab>
