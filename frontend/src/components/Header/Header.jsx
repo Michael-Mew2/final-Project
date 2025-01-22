@@ -45,23 +45,6 @@ const HeaderComponent = () => {
     document.body.style.color = darkMode ? "#ffffff" : "#1a1b1e";
   };
 
-  const handleLogin = () => {
-    if (!username || !password) {
-      setError("Bitte Benutzername und Passwort eingeben.");
-      return;
-    }
-
-    setError("");
-
-    if (username === "admin" && password === "password") {
-      setIsLoggedIn(true);
-      setUsername("");
-      setPassword("");
-    } else {
-      setError("Ungültige Login-Daten. Bitte erneut versuchen.");
-    }
-  };
-
   const handleLogout = () => {
     setIsLoggedIn(false);
   };

@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import Konva from "konva";
-import { useColorStore } from "../FarbPalette/ColorStore";
+import { useCanvasStore } from "../../stores/useCanvasStore";
 import "./KonvaCanvas.css";
 import { io } from "socket.io-client";
 
 
 const KonvaCanvas = () => {
-  const { selectedColor } = useColorStore();
+  const { selectedColor } = useCanvasStore();
   const stageRef = useRef(null);
   const layerRef = useRef(null);
   const colorRef = useRef(selectedColor);

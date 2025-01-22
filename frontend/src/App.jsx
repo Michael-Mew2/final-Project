@@ -1,18 +1,13 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import Layout from "./components/Layout";
-import { ColorProvider } from "./components/FarbPalette/ColorStore";
 import { MantineProvider } from "@mantine/core";
 import { useLoginStore } from "./stores";
 import LoginRegisterCard from "./components/LoginRegisterCard/LoginRegisterCard";
 import CanvasPage from "./components/CanvasPage";
+import { CanvasEffectsManager } from "./stores/useCanvasStore";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useLoginStore();
@@ -25,7 +20,7 @@ const ProtectedRoute = ({ children }) => {
 export default function App() {
   return (
     <MantineProvider>
-      <ColorProvider>
+      <CanvasEffectsManager>
         <Routes>
           <Route path="/" element={<Layout />}>
             {/* <Route index element={<Home />} /> */}
@@ -41,14 +36,14 @@ export default function App() {
             {/* <Route
               path="validate-email/:token"
               element={<EmailVerification />}
-            /> */}
+              /> */}
             {/* <Route path="reset/:token" element={<PasswordReset />} /> */}
             {/* <Route path="rules" element={<SiteRules />} /> */}
             {/* <Route path="data" element={<DataAgreement />} /> */}
           </Route>
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
-      </ColorProvider>
+      </CanvasEffectsManager>
     </MantineProvider>
   );
 }

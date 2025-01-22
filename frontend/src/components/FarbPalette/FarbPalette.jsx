@@ -1,11 +1,11 @@
 import React from "react";
 import "./FarbPalette.css";
-import { useColorStore } from "./ColorStore";
+import { useCanvasStore } from "../../stores/useCanvasStore";
 
 const colors = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#800080", "#FF1493", "#00CED1", "#A52A2A"];
 
 const FarbPalette = () => {
-  const { selectedColor, setSelectedColor } = useColorStore();
+  const { selectedColor, setSelectedColor } = useCanvasStore();
 
   return (
     <div className="color-palette-container">
