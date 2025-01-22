@@ -18,6 +18,8 @@ import "./header.css";
 import Register from "../Register/Register";
 import useRegisterStore from "../../stores/useRegisterStore.js";
 import LoginRegisterCard from "../LoginRegisterCard/LoginRegisterCard.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 
 const HeaderComponent = () => {
@@ -28,6 +30,14 @@ const HeaderComponent = () => {
   const {showRegisterMenu, setShowRegisterMenu} = useRegisterStore();// Steuerung des Registrierungsmenüs
 
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const goToRegister = () => {
+    navigate("/sign?tab=signup")
+  }
+  const goToLogin = () => {
+    navigate("sign?tab=signin")
+  }
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
@@ -95,32 +105,10 @@ const HeaderComponent = () => {
                 </>
               ) : (
                 <>
-                  <Menu.Label>Login</Menu.Label>
-                  <TextInput
-                    label="Benutzername"
-                    placeholder="Gib deinen Benutzernamen ein"
-                    value={username}
-                    onChange={(event) => setUsername(event.currentTarget.value)}
-                    required
-                    mb="sm"
-                  />
-                  <PasswordInput
-                    label="Passwort"
-                    placeholder="Gib dein Passwort ein"
-                    value={password}
-                    onChange={(event) => setPassword(event.currentTarget.value)}
-                    required
-                    mb="sm"
-                  />
-                  {error && (
-                    <Text color="red" size="sm" mb="sm">
-                      {error}
-                    </Text>
-                  )}
-                  <Button fullWidth variant="filled" onClick={handleLogin}>
-                    Einloggen
-                  </Button>
-                  <Menu.Item onClick={() => setShowRegisterMenu(true)}>
+                  <Menu.Item onClick={goToLogin} >
+                    Login
+                  </Menu.Item>
+                  <Menu.Item onClick={goToRegister}>
                     Registrieren
                   </Menu.Item>
                 </>

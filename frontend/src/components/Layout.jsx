@@ -7,6 +7,7 @@ import LoginOverlay from "./LoginOverlay/LoginOverlay";
 import { useColorStore } from "./FarbPalette/ColorStore";
 import "./Layout.css";
 import { io } from "socket.io-client";
+import { Outlet } from "react-router-dom";
 
 
 const Layout = ({ children }) => {
@@ -65,16 +66,17 @@ const Layout = ({ children }) => {
 
   return (
      <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
-      <KonvaCanvas selectedColor={selectedColor} socket={socket} />
+      <KonvaCanvas selectedColor={selectedColor}  socket={socket} />
 
       {/* Header */}
       <header style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "60px", backgroundColor: "#f8f8f8", zIndex: 0 }}>
         <Header onLoginClick={handleLoginOpen} />
 
       </header>
-      <div style={{ position: "fixed", bottom: "70px", left: "50%", transform: "translateX(-50%)", zIndex: 0 }}>
-        <FarbPalette />
-      </div>
+      <main>
+        <Outlet />
+      </main>
+      
       <footer style={{ position: "fixed", bottom: 0, left: 0, width: "100%", height: "45px", backgroundColor: "#f8f8f8", zIndex: 0 }}>
         <Footer />
       </footer>
