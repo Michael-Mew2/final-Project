@@ -3,11 +3,18 @@ import { useLoginStore, useRegisterStore } from "../../stores";
 import { LoginTitle } from "./LoginBaseComponents/LoginTitle";
 import { LoginForm } from "./LoginBaseComponents/LoginForm";
 import {ForgotPasswordForm} from "../ForgotPasswordForm"
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { setShowRegisterMenu } = useRegisterStore();
   const { isLoggedIn, setIsLoggedIn, setBackendError, setSuccessMessage, showForgotPassword } =
     useLoginStore();
+
+      const navigate = useNavigate();
+    
+      const handleCancel = () => {
+        navigate("/");
+      }
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +42,7 @@ export default function Login() {
         <Button
           variant="filled"
           color="orange"
-          onClick={() => setShowRegisterMenu(false)}
+          onClick={handleCancel}
         >
           Return
         </Button>

@@ -9,10 +9,16 @@ import {
 } from "@mantine/core";
 import { useLoginStore, useRegisterStore } from "../../../stores";
 import { IconArrowRight, IconHeart, IconX } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm({ onSubmit }) {
   const { setShowRegisterMenu } = useRegisterStore();
   const { setShowForgotPassword } = useLoginStore();
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate("/");
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -43,7 +49,7 @@ export function LoginForm({ onSubmit }) {
           <Button
             variant="light"
             color="red"
-            onClick={() => setShowRegisterMenu(false)}
+            onClick={handleCancel}
             rightSection={<IconX size={20} />}
           >
             Cancel
