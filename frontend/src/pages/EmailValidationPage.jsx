@@ -1,5 +1,5 @@
 import React from "react";
-import EmailVerification from "../components/EmailVerification";
+import EmailVerification from "../components/EmailVerification/EmailVerification";
 
 const EmailValidationPage = () => {
   return (

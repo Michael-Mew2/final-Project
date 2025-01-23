@@ -8,6 +8,7 @@ import { useLoginStore } from "./stores";
 import LoginRegisterCard from "./components/LoginRegisterCard/LoginRegisterCard";
 import CanvasPage from "./components/CanvasPage";
 import { CanvasEffectsManager } from "./stores/useCanvasStore";
+import EmailValidationPage from "./pages/EmailValidationPage";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useLoginStore();
@@ -33,10 +34,10 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            {/* <Route
-              path="validate-email/:token"
-              element={<EmailVerification />}
-              /> */}
+            <Route
+              path="/validate-email/:token"
+              element={<EmailValidationPage />}
+            />
             {/* <Route path="reset/:token" element={<PasswordReset />} /> */}
             {/* <Route path="rules" element={<SiteRules />} /> */}
             {/* <Route path="data" element={<DataAgreement />} /> */}
