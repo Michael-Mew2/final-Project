@@ -12,7 +12,7 @@ const useLoginStore = create((set) => ({
   showForgotPassword: false,
   setShowForgotPassword: (status) => set({ showForgotPassword: status }),
   toggleForgotPassword: () =>
-    set(state({ showForgotPassword: !state.showForgotPassword })),
+    set((state) => ({ showForgotPassword: !state.showForgotPassword })),
 }));
 
 export default useLoginStore;
