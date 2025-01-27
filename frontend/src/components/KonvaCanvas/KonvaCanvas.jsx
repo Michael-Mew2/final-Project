@@ -3,6 +3,7 @@ import Konva from "konva";
 import { useCanvasStore } from "../../stores/useCanvasStore";
 import "./KonvaCanvas.css";
 import { io } from "socket.io-client";
+import Cookies from "js-cookie";
 
 const KonvaCanvas = ({ isInteractive }) => {
   const { selectedColor } = useCanvasStore();
@@ -50,6 +51,17 @@ const KonvaCanvas = ({ isInteractive }) => {
 
         if (isInteractive) {
           rect.on("click", () => {
+            // ----- -----
+            // cookie-Token (bitte sicherer machen, da httpOnly im BE beim setzten entfernt wurde):
+            const token = Cookies.get("jwt");
+            console.log("Expected token:", token);
+
+            if (!token) {
+              console.log("No token, please log in!");
+              return;
+            }
+            // ----- -----
+
             const newColor = colorRef.current;
             rect.fill(newColor);
             layer.batchDraw();
@@ -58,12 +70,17 @@ const KonvaCanvas = ({ isInteractive }) => {
               x,
               y,
               color: newColor,
+              token,
             });
           });
 
+          socketRef.current.on("pixelPlaced", ({ msg }) => {
+            console.log("msg:", msg);
+          });
+
           socketRef.current.on("placePixelError", ({ msg }) => {
-            console.error("Canvas Error:", msg);
-          })
+            console.error("Placing Pixel Error:", msg);
+          });
         }
 
         // rect.on("click", () => {
