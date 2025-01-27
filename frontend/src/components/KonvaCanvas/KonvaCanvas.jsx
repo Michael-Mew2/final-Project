@@ -69,11 +69,17 @@ const KonvaCanvas = () => {
 
     layer.batchDraw();
 
+    const pixelMap = new Map();
+    pixelRects.forEach(({x, y, rect}) => {
+      pixelMap.set(`${x}, ${y}`, rect)
+    })
+
     const updateCanvas = (canvasData) => {
       canvasData.forEach(({ x, y, color }) => {
-        const pixel = pixelRects.find((p) => p.x === x && p.y === y);
-        if (pixel) {
-          pixel.rect.fill(color);
+        const key = `${x}, ${y}`;
+        const rect = pixelMap.get(key);
+        if (rect) {
+          rect.fill(color);
         }
       });
       layer.batchDraw();
