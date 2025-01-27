@@ -1,11 +1,13 @@
 import * as React from "react";
 import KonvaCanvas from "./KonvaCanvas/KonvaCanvas";
 import FarbPalette from "./FarbPalette/FarbPalette";
+import { useCanvasStore } from "../stores/useCanvasStore";
 
 export default function CanvasPage() {
+  const socket = useCanvasStore(state => state.socket);
   return (
     <>
-      <KonvaCanvas selectedColor={selectedColor} socket={socket} />
+      <KonvaCanvas isInteractive={true} socket={socket} />
       <div
         style={{
           position: "fixed",

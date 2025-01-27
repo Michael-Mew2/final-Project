@@ -2,19 +2,25 @@ import { loginApi } from "../../api/userApi";
 import { useLoginStore, useRegisterStore } from "../../stores";
 import { LoginTitle } from "./LoginBaseComponents/LoginTitle";
 import { LoginForm } from "./LoginBaseComponents/LoginForm";
-import {ForgotPasswordForm} from "../ForgotPasswordForm"
+import { ForgotPasswordForm } from "../ForgotPasswordForm";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mantine/core";
 
 export default function Login() {
   const { setShowRegisterMenu } = useRegisterStore();
-  const { isLoggedIn, setIsLoggedIn, setBackendError, setSuccessMessage, showForgotPassword } =
-    useLoginStore();
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    setBackendError,
+    setSuccessMessage,
+    showForgotPassword,
+  } = useLoginStore();
 
-      const navigate = useNavigate();
-    
-      const handleCancel = () => {
-        navigate("/");
-      }
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate("/");
+  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +35,9 @@ export default function Login() {
       console.log("Registration successful!");
       setIsLoggedIn(true);
       e.target.reset();
+      navigate("/canvas");
     } catch (error) {
-        setSuccessMessage(null);
+      setSuccessMessage(null);
       setBackendError(error.message.split(", "));
     }
   };
@@ -39,11 +46,7 @@ export default function Login() {
     <>
       <LoginTitle />
       {isLoggedIn ? (
-        <Button
-          variant="filled"
-          color="orange"
-          onClick={handleCancel}
-        >
+        <Button variant="filled" color="orange" onClick={handleCancel}>
           Return
         </Button>
       ) : showForgotPassword ? (

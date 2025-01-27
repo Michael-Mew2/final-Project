@@ -9,6 +9,7 @@ import LoginRegisterCard from "./components/LoginRegisterCard/LoginRegisterCard"
 import CanvasPage from "./components/CanvasPage";
 import { CanvasEffectsManager } from "./stores/useCanvasStore";
 import EmailValidationPage from "./pages/EmailValidationPage";
+import StartScreen from "./components/StartScreen";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useLoginStore();
@@ -16,6 +17,8 @@ const ProtectedRoute = ({ children }) => {
   if (!isLoggedIn) {
     return <Navigate to="/sign" />;
   }
+
+  return children;
 };
 
 export default function App() {
@@ -24,7 +27,12 @@ export default function App() {
       <CanvasEffectsManager>
         <Routes>
           <Route path="/" element={<Layout />}>
-            {/* <Route index element={<Home />} /> */}
+            <Route
+              index
+              element={
+                < StartScreen />
+              }
+            />
             <Route path="/sign" element={<LoginRegisterCard />} />
             <Route
               path="canvas"
