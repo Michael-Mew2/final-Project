@@ -83,6 +83,25 @@ const KonvaCanvas = () => {
       updateCanvas(canvasData);
     });
 
+    socketRef.current.on("pixelsOnCanvas", ({pixels}) => {
+      updateCanvas(
+        pixels.map((pixel) => ({
+          x: pixel.x,
+          y: pixel.y,
+          color: pixel.color,
+        }))
+      );
+    })
+
+    socketRef.current.on("canvasError", ({msg}) => {
+      console.error("Canvas Error:", msg);
+    });
+
+    socketRef.current.on("emptyCanvas", () => {
+      console.log("Canvas is empty");
+      
+    })
+
     socketRef.current.on("update_pixel", ({ x, y, color }) => {
       const pixel = pixelRects.find((p) => p.x === x && p.y === y);
       if (pixel) {
