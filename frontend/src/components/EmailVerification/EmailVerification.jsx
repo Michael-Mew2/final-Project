@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 const EmailVerification = () => {
   const { token } = useParams();
@@ -10,17 +9,30 @@ const EmailVerification = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await axios.get(`/api/user/validate-email/${token}`);
-        if (response.data.success) {
+        const response = await fetch(`http://localhost:3000/user/validate-email/${token}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Invalid or expired token.");
+        }
+
+        const data = await response.json();
+        if (data.success) {
           setStatus("success");
-          setMessage(response.data.message || "Email successfully verified!");
+          setMessage(data.message || "Email successfully verified!");
         } else {
           setStatus("error");
-          setMessage(response.data.message || "Invalid or expired token.");
+          setMessage(data.message || "Invalid or expired token.");
         }
       } catch (error) {
+        console.error("Verification error:", error);
         setStatus("error");
-        setMessage("An error occurred during verification. Please try again.");
+        setMessage(error.message || "An error occurred during verification. Please try again.");
       }
     };
 
