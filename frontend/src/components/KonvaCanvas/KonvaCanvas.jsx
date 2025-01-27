@@ -3,9 +3,9 @@ import Konva from "konva";
 import { useCanvasStore } from "../../stores/useCanvasStore";
 import "./KonvaCanvas.css";
 import { io } from "socket.io-client";
+import Cookies from "js-cookie";
 
-
-const KonvaCanvas = () => {
+const KonvaCanvas = ({ isInteractive }) => {
   const { selectedColor } = useCanvasStore();
   const stageRef = useRef(null);
   const layerRef = useRef(null);
@@ -16,7 +16,6 @@ const KonvaCanvas = () => {
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
-
 
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
@@ -50,17 +49,51 @@ const KonvaCanvas = () => {
           strokeWidth: 1,
         });
 
-        rect.on("click", () => {
-          const newColor = colorRef.current;
-          rect.fill(newColor);
-          layer.batchDraw();
+        if (isInteractive) {
+          rect.on("click", () => {
+            // ----- -----
+            // cookie-Token (bitte sicherer machen, da httpOnly im BE beim setzten entfernt wurde):
+            const token = Cookies.get("jwt");
+            console.log("Expected token:", token);
 
-          socketRef.current.emit("placePixel", {
-            x,
-            y,
-            color: newColor,
+            if (!token) {
+              console.log("No token, please log in!");
+              return;
+            }
+            // ----- -----
+
+            const newColor = colorRef.current;
+            rect.fill(newColor);
+            layer.batchDraw();
+
+            socketRef.current.emit("placePixel", {
+              x,
+              y,
+              color: newColor,
+              token,
+            });
           });
-        });
+
+          socketRef.current.on("pixelPlaced", ({ msg }) => {
+            console.log("msg:", msg);
+          });
+
+          socketRef.current.on("placePixelError", ({ msg }) => {
+            console.error("Placing Pixel Error:", msg);
+          });
+        }
+
+        // rect.on("click", () => {
+        //   const newColor = colorRef.current;
+        //   rect.fill(newColor);
+        //   layer.batchDraw();
+
+        //   socketRef.current.emit("placePixel", {
+        //     x,
+        //     y,
+        //     color: newColor,
+        //   });
+        // });
 
         layer.add(rect);
         pixelRects.push({ x, y, rect });
@@ -69,18 +102,44 @@ const KonvaCanvas = () => {
 
     layer.batchDraw();
 
+    const pixelMap = new Map();
+    pixelRects.forEach(({ x, y, rect }) => {
+      pixelMap.set(`${x}, ${y}`, rect);
+    });
+
     const updateCanvas = (canvasData) => {
       canvasData.forEach(({ x, y, color }) => {
-        const pixel = pixelRects.find((p) => p.x === x && p.y === y);
-        if (pixel) {
-          pixel.rect.fill(color);
+        const key = `${x}, ${y}`;
+        const rect = pixelMap.get(key);
+        if (rect) {
+          rect.fill(color);
         }
       });
       layer.batchDraw();
     };
 
     socketRef.current.emit("getCanvas", {}, (canvasData) => {
+      // console.log("Connected to canvas...");
+
       updateCanvas(canvasData);
+    });
+
+    socketRef.current.on("pixelsOnCanvas", ({ pixels }) => {
+      updateCanvas(
+        pixels.map((pixel) => ({
+          x: pixel.x,
+          y: pixel.y,
+          color: pixel.color,
+        }))
+      );
+    });
+
+    socketRef.current.on("canvasError", ({ msg }) => {
+      console.error("Canvas Error:", msg);
+    });
+
+    socketRef.current.on("emptyCanvas", () => {
+      console.log("Canvas is empty");
     });
 
     socketRef.current.on("update_pixel", ({ x, y, color }) => {
@@ -101,13 +160,18 @@ const KonvaCanvas = () => {
         y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
       };
 
-      const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+      const newScale =
+        e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
       stage.scale({ x: newScale, y: newScale });
 
       const newPos = {
-        x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-        y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+        x:
+          -(mousePointTo.x - stage.getPointerPosition().x / newScale) *
+          newScale,
+        y:
+          -(mousePointTo.y - stage.getPointerPosition().y / newScale) *
+          newScale,
       };
 
       stage.position(newPos);
@@ -130,9 +194,23 @@ const KonvaCanvas = () => {
         socketRef.current.disconnect();
       }
     };
-  }, []);
+  }, [isInteractive]);
 
-  return <div id="konva-container" style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0, overflow: "hidden" }}></div>;
+  return (
+    <div
+      id="konva-container"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 0,
+        overflow: "hidden",
+        pointerEvents: isInteractive ? "auto" : "none",
+      }}
+    ></div>
+  );
 };
 
 export default KonvaCanvas;
