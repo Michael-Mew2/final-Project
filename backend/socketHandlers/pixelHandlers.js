@@ -20,6 +20,8 @@ export default function pixelHandlers(io, socket) {
 
       socket.emit("pixelPlaced", {msg: "Pixel successfully placed!"});
     } catch (error) {
+      console.log(data);
+      
         console.error("Error placing pixel:", error.message);
         socket.emit("placePixelError", {msg: error.message})
     }

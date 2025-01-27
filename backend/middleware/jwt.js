@@ -45,7 +45,7 @@ export const authenticate = async (req, res, next) => {
     try {
       decoded = verifyToken(token);
     } catch (error) {
-      if (error.code === "TOKEN_EXPIRED") {
+      if (error.name === "TokenExpiredError") {
         return res.status(401).json({
           msg: "Session expired. Please login again.",
           code: "TOKEN_EXPIRED",
@@ -68,6 +68,7 @@ export const authenticate = async (req, res, next) => {
       res.cookie("jwt", newToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
         maxAge: COOKIE_MAX_AGE,
       });
     }
@@ -81,6 +82,8 @@ export const authenticate = async (req, res, next) => {
 };
 
 export const authenticateSocket = async (socket, next) => {
+  console.log("Authenticating...");
+  
   try {
     const token = socket.handshake.auth.token;
 

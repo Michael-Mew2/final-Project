@@ -60,6 +60,10 @@ const KonvaCanvas = ({ isInteractive }) => {
               color: newColor,
             });
           });
+
+          socketRef.current.on("placePixelError", ({ msg }) => {
+            console.error("Canvas Error:", msg);
+          })
         }
 
         // rect.on("click", () => {
