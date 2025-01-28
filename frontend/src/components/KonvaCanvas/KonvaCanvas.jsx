@@ -19,6 +19,8 @@ const KonvaCanvas = ({ isInteractive }) => {
 
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
+    // socketRef.current.off("getCanvas")
+    // socketRef.current.off("placePixel")
 
     const stage = new Konva.Stage({
       container: "konva-container",
@@ -54,7 +56,7 @@ const KonvaCanvas = ({ isInteractive }) => {
             // ----- -----
             // cookie-Token (bitte sicherer machen, da httpOnly im BE beim setzten entfernt wurde):
             const token = Cookies.get("jwt");
-            console.log("Expected token:", token);
+            // console.log("Expected token:", token);
 
             if (!token) {
               console.log("No token, please log in!");
@@ -113,6 +115,9 @@ const KonvaCanvas = ({ isInteractive }) => {
         const rect = pixelMap.get(key);
         if (rect) {
           rect.fill(color);
+          layer.batchDraw();
+        } else {
+          console.warn("No rectangle found for key:", key);
         }
       });
       layer.batchDraw();
@@ -125,6 +130,7 @@ const KonvaCanvas = ({ isInteractive }) => {
     });
 
     socketRef.current.on("pixelsOnCanvas", ({ pixels }) => {
+      console.log("Full canvas update received");
       updateCanvas(
         pixels.map((pixel) => ({
           x: pixel.x,
@@ -142,11 +148,14 @@ const KonvaCanvas = ({ isInteractive }) => {
       console.log("Canvas is empty");
     });
 
-    socketRef.current.on("update_pixel", ({ x, y, color }) => {
+    socketRef.current.on("pixelUpdated", ({ x, y, color }) => {
+      console.log("Update Pixel Event Received:", { x, y, color });
       const pixel = pixelRects.find((p) => p.x === x && p.y === y);
       if (pixel) {
         pixel.rect.fill(color);
         layer.batchDraw();
+      } else {
+        console.warn("Pixel not found:", { x, y });
       }
     });
 
@@ -194,7 +203,7 @@ const KonvaCanvas = ({ isInteractive }) => {
         socketRef.current.disconnect();
       }
     };
-  }, [isInteractive]);
+  }, []);
 
   return (
     <div
