@@ -194,7 +194,7 @@ const KonvaCanvas = ({ isInteractive }) => {
         socketRef.current.disconnect();
       }
     };
-  }, [isInteractive]);
+  }, []);
 
   return (
     <div
