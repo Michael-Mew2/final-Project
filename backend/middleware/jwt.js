@@ -65,10 +65,11 @@ export const authenticate = async (req, res, next) => {
 
     if (tokenExp - Date.now() < fiveMinutes) {
       const newToken = generateToken({ userId: user._id });
+      const prodMode = process.env.NODE_ENV === "production"
       res.cookie("jwt", newToken, {
         httpOnly: false,
-        secure: process.env.NODE_ENV === "production", // Nur im Produktivmodus aktivieren
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "lax" für localhost-Entwicklung
+        secure: prodMode, // Nur im Produktivmodus aktivieren
+        sameSite: prodMode ? "none" : "lax", // "lax" für localhost-Entwicklung
         maxAge: COOKIE_MAX_AGE,
       });
     }
