@@ -13,7 +13,7 @@ import { configureSocket } from "./config/socket.js";
 const PORT = process.env.PORT || 3000;
 const FRONT_END =
   process.env.NODE_ENV === "development"
-    ? process.env.FRONTEND_DEV
+    ? process.env.FRONTEND_DEV_URL
     : process.env.FRONTEND_URL;
 const app = express();
 const server = http.createServer(app);
@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [FRONT_END, "http://localhost:5173/"], // Frontend-URL
+    origin: [FRONT_END], // Frontend-URL
     credentials: true, // Allows sending Cookies
   })
 );
