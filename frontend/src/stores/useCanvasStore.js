@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 
+const checkENV = import.meta.env.VITE_API_NODE_ENV === "production";
+const URL = checkENV ? import.meta.env.VITE_API_BASE_URL : import.meta.env.VITE_API_DEV_URL
+
 export const useCanvasStore = create((set, get) => ({
   socket: null,
   selectedColor: "#000000",
@@ -9,7 +12,7 @@ export const useCanvasStore = create((set, get) => ({
   setSelectedColor: (color) => set({ selectedColor: color }),
 
   initializeSocket: () => {
-    const newSocket = io(import.meta.env.VITE_API_BASE_URL);
+    const newSocket = io(URL);
     set({ socket: newSocket });
     console.log("Socket.IO verbunden");
 

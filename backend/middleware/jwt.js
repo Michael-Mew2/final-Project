@@ -67,8 +67,8 @@ export const authenticate = async (req, res, next) => {
       const newToken = generateToken({ userId: user._id });
       res.cookie("jwt", newToken, {
         httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production", // Nur im Produktivmodus aktivieren
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "lax" für localhost-Entwicklung
         maxAge: COOKIE_MAX_AGE,
       });
     }
@@ -83,7 +83,7 @@ export const authenticate = async (req, res, next) => {
 
 export const authenticateSocket = async (socket, next) => {
   console.log("Authenticating...");
-  
+
   try {
     const token = socket.handshake.auth.token;
 
@@ -111,13 +111,12 @@ export const authenticateSocket = async (socket, next) => {
 
     if (tokenExp - Date.now() < fiveMinutes) {
       const newToken = generateToken({ userId: user._id });
-      
-      socket.emit("tokenRenewal", {token: newToken})
+
+      socket.emit("tokenRenewal", { token: newToken });
     }
 
     socket.user = { id: user._id, role: user.role };
     next();
-    
   } catch (error) {
     console.error("Authentication error:", error);
     next(new Error("Authentication failed"));

@@ -13,7 +13,8 @@ const LoginOverlay = ({ isOpen, onClose, onLogin }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const checkENV = import.meta.env.VITE_API_NODE_ENV === "production";
+  const BASE_URL = checkENV ? import.meta.env.VITE_API_BASE_URL : import.meta.env.VITE_API_DEV_URL;
 
   const handleLogin = async () => {
     if (!username || !password) {

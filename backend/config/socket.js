@@ -7,11 +7,11 @@ const FRONTEND_DEV_URL = process.env.FRONTEND_DEV_URL;
 export const configureSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: FRONTEND_URL || FRONTEND_DEV_URL,
+      origin: [FRONTEND_URL, FRONTEND_DEV_URL, "http://localhost:5173"],
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     },
-    transports: ["websocket"],
+    transports: ["websocket", "polling"],
   });
   console.log("Socket is running!");
   
