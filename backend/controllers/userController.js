@@ -131,7 +131,7 @@ export async function loginUser(req, res) {
     const token = generateToken({ userId: user._id, role: user.role });
 
     const prodMode = process.env.NODE_ENV === "production"
-    console.log(prodMode);
+    console.log("userController_prodMode:", prodMode);
 
     return res
       .status(200)

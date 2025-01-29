@@ -58,10 +58,20 @@ const KonvaCanvas = ({ isInteractive }) => {
             // cookie-Token (bitte sicherer machen, da httpOnly im BE beim setzten entfernt wurde):
             const token = Cookies.get("jwt");
             console.log("Expected token:", token);
+            console.log("Cookie contents:", document.cookie);
+            
 
             if (!token) {
-              console.log("No token, please log in!");
-              return;
+              // Versuche das Cookie direkt zu lesen
+              const allCookies = document.cookie.split(';');
+              const jwtCookie = allCookies.find(cookie => cookie.trim().startsWith('jwt='));
+              if (jwtCookie) {
+                const extractedToken = jwtCookie.split('=')[1];
+                console.log("Found token through direct access:", extractedToken);
+              } else {
+                console.log("No token found in any way");
+                return;
+              }
             }
             // ----- -----
 
