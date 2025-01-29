@@ -10,13 +10,14 @@ import CanvasPage from "./components/CanvasPage";
 import { CanvasEffectsManager } from "./stores/useCanvasStore";
 import EmailValidationPage from "./pages/EmailValidationPage";
 import StartScreen from "./components/StartScreen";
+import { useEffect } from "react";
 
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useLoginStore();
+  const checkLoginStatus = useLoginStore((state) => state.checkLoginStatus);
 
-  if (!isLoggedIn) {
-    return <Navigate to="/sign" />;
-  }
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus])
 
   return children;
 };
