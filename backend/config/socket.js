@@ -6,7 +6,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 export const configureSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: process.env.NODE_ENV === 'development' ? '*' : FRONTEND_URL,
+      origin: process.env.NODE_ENV === 'development' ? "http://localhost:5173/": FRONTEND_URL,
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
     },
