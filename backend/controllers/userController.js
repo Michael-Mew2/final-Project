@@ -134,7 +134,7 @@ export async function loginUser(req, res) {
       .status(200)
       .cookie("jwt", token, {
         httpOnly: false,
-        secure: process.env.NODE_ENV === "Production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "none",
         maxAge: AUTH_CONFIG.COOKIE_MAX_AGE,
       })
