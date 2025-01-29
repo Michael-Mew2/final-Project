@@ -66,6 +66,8 @@ export const authenticate = async (req, res, next) => {
     if (tokenExp - Date.now() < fiveMinutes) {
       const newToken = generateToken({ userId: user._id });
       const prodMode = process.env.NODE_ENV === "production"
+      console.log(prodMode);
+      
       res.cookie("jwt", newToken, {
         httpOnly: false,
         secure: prodMode, // Nur im Produktivmodus aktivieren
