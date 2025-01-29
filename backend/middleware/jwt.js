@@ -66,7 +66,7 @@ export const authenticate = async (req, res, next) => {
     if (tokenExp - Date.now() < fiveMinutes) {
       const newToken = generateToken({ userId: user._id });
       const prodMode = process.env.NODE_ENV === "production"
-      console.log(prodMode);
+      console.log("jwt_prodMode:", prodMode);
       
       res.cookie("jwt", newToken, {
         httpOnly: false,

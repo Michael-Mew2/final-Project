@@ -1,4 +1,5 @@
 import * as React from "react";
+import Cookies from "js-cookie"
 
 const checkENV = import.meta.env.VITE_API_NODE_ENV === "production";
 const BASE_URL = checkENV ? import.meta.env.VITE_API_BASE_URL : import.meta.env.VITE_API_DEV_URL;
@@ -51,6 +52,20 @@ export const loginApi = async (email, password) => {
       }
       throw new Error(data.msg || "Logging in failed, please try again later.");
     }
+
+    const token = Cookies.get("jwt");
+    if (token) {
+      console.log("Token successfully stored:", token);
+    } else {
+      // Alternativ: Token aus den Response-Headers holen und manuell setzen
+      Cookies.set('jwt', data.token, {
+        secure: true,
+        sameSite: 'none',
+        path: '/'
+      });
+    }
+
+
     return data;
   } catch (error) {
     throw error;
