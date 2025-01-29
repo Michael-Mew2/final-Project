@@ -12,13 +12,16 @@ const KonvaCanvas = ({ isInteractive }) => {
   const colorRef = useRef(selectedColor);
 
   const socketRef = useRef(null);
+  
+  const checkENV = import.meta.env.VITE_API_NODE_ENV === "production";
+  const URL = checkENV ? import.meta.env.VITE_API_BASE_URL : import.meta.env.VITE_API_DEV_URL
 
   useEffect(() => {
     colorRef.current = selectedColor;
   }, [selectedColor]);
 
   useEffect(() => {
-    socketRef.current = io(import.meta.env.VITE_API_BASE_URL);
+    socketRef.current = io(URL);
 
     const stage = new Konva.Stage({
       container: "konva-container",

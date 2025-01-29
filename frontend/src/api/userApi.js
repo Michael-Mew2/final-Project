@@ -1,6 +1,7 @@
 import * as React from "react";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const checkENV = import.meta.env.VITE_NODE_ENV === "production";
+const BASE_URL = checkENV ? import.meta.env.VITE_API_BASE_URL : import.meta.env.VITE_API_DEV_URL;
 
 export const registerApi = async (username, email, password, birthdate) => {
   try {

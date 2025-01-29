@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_BASE_URL;
+const checkENV = import.meta.env.VITE_API_NODE_ENV === "production"
+
+const SOCKET_URL = checkENV ? import.meta.env.VITE_BASE_URL : import.meta.env.VITE_API_DEV_URL
 
 const socket = io(SOCKET_URL, {
   autoConnect: false,
