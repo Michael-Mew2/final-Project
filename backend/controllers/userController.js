@@ -130,12 +130,15 @@ export async function loginUser(req, res) {
 
     const token = generateToken({ userId: user._id, role: user.role });
 
+    const prodMode = process.env.NODE_ENV === "production"
+    console.log(prodMode);
+
     return res
       .status(200)
       .cookie("jwt", token, {
         httpOnly: false,
-        secure: process.env.NODE_ENV === "production", // Nur im Produktivmodus aktivieren
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "lax" für localhost-Entwicklung
+        secure: prodMode, // Nur im Produktivmodus aktivieren
+        sameSite: prodMode ? "none" : "lax", // "lax" für localhost-Entwicklung
         maxAge: AUTH_CONFIG.COOKIE_MAX_AGE,
       })
       .json({ msg: "Login successful", user });
