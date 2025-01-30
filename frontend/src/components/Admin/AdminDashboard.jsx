@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/user/admin/users");
+      const response = await fetch("/api/users/admin/users");
       if (!response.ok) throw new Error("Fehler beim Abrufen der Benutzerdaten.");
       const data = await response.json();
       setUsers(data);
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(`/api/user/admin/users/${userId}/delete`, {
+      const response = await fetch(`/api/users/admin/users/${userId}/delete`, {
         method: "DELETE",
       });
       if (!response.ok) {
