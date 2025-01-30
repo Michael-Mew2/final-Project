@@ -60,13 +60,17 @@ export async function createUser(req, res) {
 export async function validateEmail(req, res) {
   try {
     const { token } = req.params;
-    const user = await User.findOne({ validationToken: token });
+    // console.log("token:", "lol");
+    const user = await User.findOne({
+      validationToken: token,
+    });
+    // console.log("user:", user);
     if (!user) {
       return res.status(400).json({ msg: "Invalid validation Email" });
     }
 
     user.emailValidated = true;
-    user.validationToken = undefined;
+    user.validationToken = null;
     await user.save();
 
     res.status(200).json({ msg: "Email successfully verified!" });
@@ -103,7 +107,7 @@ export async function loginUser(req, res) {
       user.loginAttempts = 0;
     }
     console.log("front end cleartext password:", password);
-    
+
     const passwordMatch = await user.authenticate(password);
     console.log(passwordMatch);
     if (!passwordMatch) {
@@ -130,7 +134,7 @@ export async function loginUser(req, res) {
 
     const token = generateToken({ userId: user._id, role: user.role });
 
-    const prodMode = process.env.NODE_ENV === "production"
+    const prodMode = process.env.NODE_ENV === "production";
     console.log("userController_prodMode:", prodMode);
 
     return res

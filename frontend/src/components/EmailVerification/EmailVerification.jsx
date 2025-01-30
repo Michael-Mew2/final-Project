@@ -6,15 +6,23 @@ const EmailVerification = () => {
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
 
+  const checkENV = import.meta.env.VITE_API_NODE_ENV === "production";
+  const BASE_URL = checkENV
+    ? import.meta.env.VITE_API_BASE_URL
+    : import.meta.env.VITE_API_DEV_URL;
+
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/user/validate-email/${token}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${BASE_URL}/users/validate-email/${token}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -32,7 +40,10 @@ const EmailVerification = () => {
       } catch (error) {
         console.error("Verification error:", error);
         setStatus("error");
-        setMessage(error.message || "An error occurred during verification. Please try again.");
+        setMessage(
+          error.message ||
+            "An error occurred during verification. Please try again."
+        );
       }
     };
 
