@@ -1,10 +1,8 @@
-# final-Project
+# pixel-together
 
-Update aus der dev branch!
+Willkommen auf unserem (final-) Project!
 
-Das ist mein textlicher Beitrag zum git-Hub-merge testen!
+pixel-together ist eine interaktive Webseite auf der sich User kostenlos registrieren können um zusammen ein gemeinsames dynamisches Bild zu erschaffen.
 
-git push --set-upstream origin feature/edit
-
-git checkout branch
+Wir freuen uns das du da bist!
 
