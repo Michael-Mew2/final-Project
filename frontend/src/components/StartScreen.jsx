@@ -6,7 +6,7 @@ export default function StartScreen() {
     <>
       <KonvaCanvas isInteractive={false} />
       <div>
-        <h1 style={{ zIndex: 20 }}>Home</h1>
+        {/* <h1 style={{ zIndex: 20 }}>Home</h1> */}
       </div>
     </>
   );

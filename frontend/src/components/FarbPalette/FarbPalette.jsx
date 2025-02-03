@@ -2,7 +2,7 @@ import React from "react";
 import "./FarbPalette.css";
 import { useCanvasStore } from "../../stores/useCanvasStore";
 
-const colors = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#800080", "#FF1493", "#00CED1", "#A52A2A"];
+const colors = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#800080", "#FF1493", "#00CED1", "#A52A2A", "#FFFFFF", "#000000"];
 
 const FarbPalette = () => {
   const { selectedColor, setSelectedColor } = useCanvasStore();

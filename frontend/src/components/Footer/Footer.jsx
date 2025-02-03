@@ -5,10 +5,10 @@ import "./footer.css";
 
 const FooterComponent = () => {
   return (
-    <footer style={{ backgroundColor: "#f8f9fa", padding: "20px 0" }}>
-      <Container>
+    <footer className="footer">
+      <Container className="footer-container">
         <Group position="apart" align="center">
-          <Text size="sm" color="dimmed">
+          <Text size="sm" className="footer-text">
             © {new Date().getFullYear()} pixel-together.
           </Text>
 
@@ -19,6 +19,7 @@ const FooterComponent = () => {
               href="https://github.com/Michael-Mew2/final-Project"
               target="_blank"
               title="GitHub"
+              className="footer-icon"
             >
               <BrandGithub size={20} />
             </ActionIcon>
@@ -29,6 +30,7 @@ const FooterComponent = () => {
               href="https://linkedin.com/"
               target="_blank"
               title="LinkedIn"
+              className="footer-icon"
             >
               <BrandLinkedin size={20} />
             </ActionIcon>
@@ -39,6 +41,7 @@ const FooterComponent = () => {
               href="https://twitter.com/"
               target="_blank"
               title="Twitter"
+              className="footer-icon"
             >
               <BrandTwitter size={20} />
             </ActionIcon>
