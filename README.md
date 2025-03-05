@@ -19,9 +19,9 @@ Inspired by **r/place**, the annual Reddit event that brings millions of people 
 
 ## 👥 Our Team
 
-- [**Mirko**]([https://github.com/alicegithub](https://github.com/mirkobrink2412)) – Frontend Developer
-- [**Timo**]([https://github.com/bobgithub](https://github.com/TimoB2403)) – Frontend & Backend Developer
-- [**Michael**]([https://github.com/charliegithub](https://github.com/Michael-Mew2)) – Projectmanager, Frontend & Backend Developer
+- [**Mirko**](https://github.com/mirkobrink2412) – Frontend Developer
+- [**Timo**](https://github.com/TimoB2403) – Frontend & Backend Developer
+- [**Michael**](https://github.com/Michael-Mew2) – Projectmanager, Frontend & Backend Developer
 
 ## 🔧 How it Works
 
