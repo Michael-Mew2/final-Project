@@ -1,10 +1,7 @@
-# final-Project
+# pixel-together
+Welcome to pixel-together (beta) the free open online canvas where everyone can take part on. This website was a was our final project for our webdevelopment course at the DCI (Digital Carreer Institute).
 
-Update aus der dev branch!
-
-Das ist mein textlicher Beitrag zum git-Hub-merge testen!
-
-git push --set-upstream origin feature/edit
-
-git checkout branch
-
+## Our Team:
+- Mirko
+- Timo
+- Michael
