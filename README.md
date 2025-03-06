@@ -68,7 +68,7 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/pixel-together.git
+   git clone https://github.com/Michael-Mew2/pixel-together.git
    cd pixel-together
    ```
 
